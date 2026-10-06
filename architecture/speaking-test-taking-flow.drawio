@@ -1,0 +1,85 @@
+<mxfile host="app.diagrams.net" modified="2026-09-22T00:00:00.000Z" agent="Claude" version="24.0.0" type="device">
+  <diagram name="How a student takes the test" id="speaking-test-taking-flow">
+    <mxGraphModel dx="1200" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1240" pageHeight="1160" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===================== TITLE ===================== -->
+        <mxCell id="title1" value="How a Student Takes the Speaking Test" style="text;html=1;fontSize=26;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="140" y="10" width="900" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle1" value="What happens before a teacher ever sees the test — from picking a test to the moment it's ready to be graded." style="text;html=1;fontSize=15;fontStyle=2;align=left;verticalAlign=middle;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="140" y="52" width="900" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== BOX 1: choose ===================== -->
+        <mxCell id="choose1" value="&lt;div style=&quot;font-size:20px;font-weight:bold;margin-bottom:8px;&quot;&gt;🧑‍🎓 1. Student picks a test&lt;/div&gt;&lt;div style=&quot;font-size:14px;line-height:1.5;&quot;&gt;They choose one of two options: answer just &lt;b&gt;one part&lt;/b&gt;, or answer &lt;b&gt;all three parts&lt;/b&gt; (Part 1, 2, and 3) in one sitting.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;shadow=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=2;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="140" y="94" width="900" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== LOOP BOX: ask + record ===================== -->
+        <mxCell id="loop1" value="&lt;div style=&quot;font-size:20px;font-weight:bold;margin-bottom:10px;&quot;&gt;🔁 2. Answering the questions in a part&lt;/div&gt;&lt;div style=&quot;font-size:14px;line-height:1.6;text-align:left;display:inline-block;&quot;&gt;&lt;b&gt;a.&lt;/b&gt; The app shows the next question.&lt;br&gt;&lt;b&gt;b.&lt;/b&gt; Student taps Record and speaks their answer — audio only.&lt;br&gt;&lt;b&gt;c.&lt;/b&gt; Steps a and b repeat until every question in this part is answered.&lt;/div&gt;" style="rounded=1;dashed=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;fillColor=#F5F5F5;strokeColor=#666666;strokeWidth=2;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="140" y="250" width="900" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- callout: where questions come from -->
+        <mxCell id="qsource1" value="&lt;div style=&quot;font-size:13px;line-height:1.5;text-align:left;&quot;&gt;❓ &lt;b&gt;Where do questions come from?&lt;/b&gt;&lt;br&gt;Part 1 &amp;amp; Part 2 questions come from a ready-made list.&lt;br&gt;Part 3 questions are freshly written by the assistant, based on what the student said in Part 2.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=2;dashed=1;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="250" width="360" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="qsourceArrow" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=2;strokeColor=#D6B656;dashed=1;endArrow=block;" edge="1" parent="1" source="loop1" target="qsource1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- callout: auto-advance between parts -->
+        <mxCell id="advance1" value="&lt;div style=&quot;font-size:13px;line-height:1.5;text-align:left;&quot;&gt;➡️ &lt;b&gt;Doing all 3 parts?&lt;/b&gt;&lt;br&gt;As soon as one part is finished, the app automatically moves on to the next part and this loop starts again.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=2;dashed=1;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="410" width="360" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="advanceArrow" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=2;strokeColor=#D6B656;dashed=1;endArrow=block;" edge="1" parent="1" source="loop1" target="advance1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== FORK LABEL ===================== -->
+        <mxCell id="fork1" value="Once everything the student chose to do is finished..." style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=2;align=center;verticalAlign=middle;fillColor=#FFFFFF;strokeColor=#333333;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="340" y="500" width="500" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== PATH 1: single part ===================== -->
+        <mxCell id="path1" value="&lt;div style=&quot;font-size:18px;font-weight:bold;margin-bottom:10px;&quot;&gt;🟢 Path A — Student did ONE part&lt;/div&gt;&lt;div style=&quot;font-size:13px;line-height:1.6;text-align:left;display:inline-block;&quot;&gt;1. Writes an improved version of each answer.&lt;br&gt;2. Points out mistakes in each answer, sorted into 4 areas (Fluency, Vocabulary, Grammar, Pronunciation) — &lt;b&gt;no number score yet&lt;/b&gt; at this point.&lt;br&gt;3. Finishes with &lt;b&gt;one overview score&lt;/b&gt; for the part, summarizing everything above.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;shadow=1;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=2;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="140" y="590" width="430" height="320" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== PATH 2: all three parts ===================== -->
+        <mxCell id="path2" value="&lt;div style=&quot;font-size:18px;font-weight:bold;margin-bottom:10px;&quot;&gt;🟣 Path B — Student did ALL 3 parts&lt;/div&gt;&lt;div style=&quot;font-size:13px;line-height:1.6;text-align:left;display:inline-block;&quot;&gt;1. Waits until all 3 parts are done.&lt;br&gt;2. Writes an improved version of &lt;b&gt;every&lt;/b&gt; answer, across all 3 parts.&lt;br&gt;3. Points out mistakes in every answer, same 4 areas as Path A.&lt;br&gt;4. Finishes with a score for &lt;b&gt;each part&lt;/b&gt;, plus &lt;b&gt;one overall score&lt;/b&gt; combining all three.&lt;br&gt;5. All of this happens &lt;b&gt;once, at the very end&lt;/b&gt; — not after each part.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;shadow=1;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=2;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="670" y="590" width="430" height="320" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== FINAL ===================== -->
+        <mxCell id="final1" value="&lt;div style=&quot;font-size:18px;font-weight:bold;&quot;&gt;📬 Ready for the teacher to review&lt;/div&gt;&lt;div style=&quot;font-size:13px;margin-top:4px;&quot;&gt;This is where the teacher review tool picks up.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;shadow=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=2;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="290" y="960" width="600" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== FLOW ARROWS ===================== -->
+        <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=4;strokeColor=#333333;endArrow=block;" edge="1" parent="1" source="choose1" target="loop1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=4;strokeColor=#333333;endArrow=block;" edge="1" parent="1" source="loop1" target="fork1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" value="only 1 part" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=12;fontStyle=1;strokeWidth=3;strokeColor=#82B366;endArrow=block;" edge="1" parent="1" source="fork1" target="path1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" value="all 3 parts" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=12;fontStyle=1;strokeWidth=3;strokeColor=#9673A6;endArrow=block;" edge="1" parent="1" source="fork1" target="path2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=4;strokeColor=#333333;endArrow=block;" edge="1" parent="1" source="path1" target="final1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=4;strokeColor=#333333;endArrow=block;" edge="1" parent="1" source="path2" target="final1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,74 @@
+<mxfile host="app.diagrams.net" modified="2026-09-21T00:00:00.000Z" agent="Claude" version="24.0.0" type="device">
+  <diagram name="How it works (plain language)" id="speaking-review-simple">
+    <mxGraphModel dx="1200" dy="1500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1220" pageHeight="1480" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===================== TITLE ===================== -->
+        <mxCell id="title1" value="How the Speaking Review Tool Works" style="text;html=1;fontSize=26;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="140" y="10" width="900" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle1" value="A simple step-by-step of what happens when a teacher grades a student's speaking test." style="text;html=1;fontSize=15;fontStyle=2;align=left;verticalAlign=middle;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="140" y="52" width="900" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== STEP 1 ===================== -->
+        <mxCell id="step1" value="&lt;div style=&quot;font-size:20px;font-weight:bold;margin-bottom:8px;&quot;&gt;🎙️ 1. The student records their answers&lt;/div&gt;&lt;div style=&quot;font-size:14px;line-height:1.5;&quot;&gt;The student speaks their answers into the app. The recording and a written copy of what they said are both kept.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;shadow=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=2;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="140" y="94" width="640" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== STEP 2 ===================== -->
+        <mxCell id="step2" value="&lt;div style=&quot;font-size:20px;font-weight:bold;margin-bottom:8px;&quot;&gt;📝 2. The app lines up the words with the recording&lt;/div&gt;&lt;div style=&quot;font-size:14px;line-height:1.5;&quot;&gt;Behind the scenes, the app listens back to the recording and notes exactly when each word was spoken — so later, clicking on any sentence jumps straight to that moment in the audio.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;shadow=1;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=2;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="140" y="314" width="640" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== STEP 3 ===================== -->
+        <mxCell id="step3" value="&lt;div style=&quot;font-size:20px;font-weight:bold;margin-bottom:8px;&quot;&gt;🤖 3. A computer assistant makes a first guess&lt;/div&gt;&lt;div style=&quot;font-size:14px;line-height:1.5;&quot;&gt;It suggests starting scores and gently flags a few words or phrases that might be mistakes. This is only a first draft — never the final word.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;shadow=1;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=3;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="140" y="574" width="640" height="190" as="geometry" />
+        </mxCell>
+
+        <!-- callout beside step 3 -->
+        <mxCell id="callout1" value="&lt;div style=&quot;font-size:14px;line-height:1.5;&quot;&gt;💡 &lt;b&gt;This is the easiest part to upgrade later.&lt;/b&gt;&lt;br&gt;If a smarter assistant becomes available one day, only this one step changes — everything else in the tool stays exactly the same.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=2;dashed=1;spacing=14;" vertex="1" parent="1">
+          <mxGeometry x="820" y="584" width="340" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="calloutArrow" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=2;strokeColor=#D6B656;dashed=1;endArrow=block;" edge="1" parent="1" source="step3" target="callout1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== STEP 4 ===================== -->
+        <mxCell id="step4" value="&lt;div style=&quot;font-size:20px;font-weight:bold;margin-bottom:8px;&quot;&gt;👩‍🏫 4. The teacher listens and decides&lt;/div&gt;&lt;div style=&quot;font-size:14px;line-height:1.5;&quot;&gt;The teacher plays the real recording, agrees or disagrees with each flagged mistake, adjusts the scores, and writes a short note for the student.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;shadow=1;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=2;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="140" y="854" width="640" height="170" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== STEP 5 ===================== -->
+        <mxCell id="step5" value="&lt;div style=&quot;font-size:20px;font-weight:bold;margin-bottom:8px;&quot;&gt;💾 5. Everything is saved safely&lt;/div&gt;&lt;div style=&quot;font-size:14px;line-height:1.5;&quot;&gt;Every change the teacher makes — scores, notes, decisions — is saved right away, so nothing is lost even if the page is closed.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;shadow=1;fillColor=#F5F5F5;strokeColor=#666666;strokeWidth=2;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1094" width="640" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== STEP 6 ===================== -->
+        <mxCell id="step6" value="&lt;div style=&quot;font-size:20px;font-weight:bold;margin-bottom:8px;&quot;&gt;✅ 6. The finished result goes to the student&lt;/div&gt;&lt;div style=&quot;font-size:14px;line-height:1.5;&quot;&gt;Once every part of the test is graded, the teacher sends it back — the student sees their final scores and the teacher's notes.&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;arcSize=6;shadow=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=2;spacing=16;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1314" width="640" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== FLOW ARROWS ===================== -->
+        <mxCell id="a12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=4;strokeColor=#333333;endArrow=block;" edge="1" parent="1" source="step1" target="step2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=4;strokeColor=#333333;endArrow=block;" edge="1" parent="1" source="step2" target="step3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=4;strokeColor=#333333;endArrow=block;" edge="1" parent="1" source="step3" target="step4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=4;strokeColor=#333333;endArrow=block;" edge="1" parent="1" source="step4" target="step5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=4;strokeColor=#333333;endArrow=block;" edge="1" parent="1" source="step5" target="step6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,20 @@
+# built standalone copies of the mockups — regenerate with mockups/build-standalone.js
+dist/
+
+# dependencies and build output
+node_modules/
+.next/
+out/
+
+# editor and OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# drafts and local env
+*.log
+.env
+.env.local
+~$*

@@ -1,0 +1,1105 @@
+<title>IELTS mock interview choose part</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
+
+<style>
+/* Layout: a chooser screen first — practise one part, or take the full test — then one screen
+   per part. Free mode lets you move between parts; full-test mode locks them into order. */
+:root{
+  color-scheme:light;
+
+  --gold:#C9A33E; --grid:rgba(28,21,8,.085);
+  --ink:#1C1508; --ink-2:#4A3D1E; --olive:#7A6A2E;
+  --cream:#F8F5EA; --cream-2:#FFFDF6; --paper:#FEFCF2;
+  --yellow:#F7DC5E; --yellow-deep:#E9C935; --yellow-soft:#FBF1B5;
+  --mint:#E3F0E0; --mint-ink:#3F6B3C;
+  --pink:#FBDDDC; --pink-ink:#A2453C;
+  --lilac:#E7E3F8; --lilac-ink:#5546A0;
+  --red:#B4443A; --red-soft:#FADFDC;
+
+  --line:2.5px solid var(--ink);
+  --line-thin:2px solid var(--ink);
+  --r-lg:20px; --r-md:14px; --r-sm:10px;
+  --shadow:0 3px 0 rgba(28,21,8,.18);
+
+  --font-ui:'Outfit',system-ui,-apple-system,sans-serif;
+  --font-read:'DM Sans',Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;font-family:var(--font-ui);color:var(--ink);
+  background-color:var(--gold);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:46px 46px;
+}
+button{font-family:inherit;color:inherit;cursor:pointer}
+textarea{font-family:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+::selection{background:var(--yellow)}
+
+.shell{
+  height:100%;max-width:1180px;margin:0 auto;
+  display:flex;flex-direction:column;gap:12px;
+  padding-inline:16px;padding-block:16px 0;
+}
+
+/* ---------------- top bar ---------------- */
+.topbar{
+  flex:none;background:var(--cream);border:var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);padding:12px 14px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.iconbtn{
+  width:40px;height:40px;flex:none;border:var(--line-thin);border-radius:12px;
+  background:var(--cream-2);display:grid;place-items:center;
+}
+.iconbtn:hover{background:var(--yellow-soft)}
+.iconbtn svg{width:17px;height:17px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.brand{display:flex;flex-direction:column;gap:3px;min-width:0}
+.brand h1{margin:0;font-size:19px;font-weight:800;letter-spacing:.01em;text-transform:uppercase;line-height:1}
+.brand .status{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--olive)}
+.live{width:8px;height:8px;border-radius:999px;background:#4E9A5A;flex:none}
+.grow{flex:1;min-width:8px}
+
+.voicewrap{display:flex;flex-direction:column;align-items:center;gap:5px}
+.voicewrap .cap{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--olive)}
+.voicerow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:center}
+.playbtn{
+  width:42px;height:38px;flex:none;border:var(--line-thin);border-radius:11px;
+  background:var(--yellow);display:grid;place-items:center;box-shadow:var(--shadow);
+}
+.playbtn:hover{background:var(--yellow-deep)}
+.playbtn svg{width:14px;height:14px;fill:var(--ink)}
+.voicesel{
+  appearance:none;font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--ink);
+  background:var(--cream-2);border:var(--line-thin);border-radius:12px;padding:9px 34px 9px 14px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231C1508' stroke-width='2.4' stroke-linecap='round'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat;background-position:right 11px center;background-size:15px;
+}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;flex:none;
+  border:var(--line-thin);border-radius:11px;background:var(--cream-2);
+  padding:9px 13px;font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  font-variant-numeric:tabular-nums;
+}
+.chip svg{width:13px;height:13px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.chip.counter{background:var(--yellow-soft)}
+.chip.mode{background:var(--ink);color:var(--cream)}
+.chip.mode svg{stroke:var(--cream)}
+.endbtn{
+  flex:none;border:var(--line-thin);border-radius:11px;background:var(--red-soft);color:var(--red);
+  padding:9px 18px;font-size:14px;font-weight:700;
+}
+.endbtn:hover{background:#F6CFCB}
+
+/* ---------------- chooser ---------------- */
+.chooser{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:4px 4px 20px}
+.choosehead{text-align:center;margin:10px 0 20px}
+.choosehead h2{margin:0;font-size:30px;font-weight:800;letter-spacing:-.015em;line-height:1.1;text-wrap:balance}
+.choosehead p{margin:8px auto 0;max-width:52ch;font-family:var(--font-read);font-size:15.5px;line-height:1.55;color:var(--ink-2)}
+.options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:860px){.options{grid-template-columns:1fr}}
+.opt{
+  text-align:left;background:var(--cream);border:var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);padding:18px 19px;display:flex;flex-direction:column;gap:9px;
+  transition:transform .12s,box-shadow .12s;
+}
+.opt:hover{transform:translateY(-2px);box-shadow:0 6px 0 rgba(28,21,8,.2)}
+.opt:active{transform:translateY(1px);box-shadow:0 2px 0 rgba(28,21,8,.2)}
+.opt .top{display:flex;align-items:center;gap:10px}
+.opt .num{
+  width:38px;height:38px;flex:none;border-radius:999px;border:var(--line-thin);background:var(--yellow);
+  display:grid;place-items:center;font-size:16px;font-weight:800;
+}
+.opt .nm{font-size:16px;font-weight:800;letter-spacing:-.01em;line-height:1.15}
+.opt .state{
+  margin-left:auto;flex:none;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  border:1.8px solid var(--ink);border-radius:999px;padding:3px 9px;background:var(--cream-2);
+}
+.opt .state.done{background:var(--mint);color:var(--mint-ink)}
+.opt .d{font-family:var(--font-read);font-size:13.5px;line-height:1.5;color:var(--ink-2);margin:0;flex:1}
+.opt .facts{display:flex;gap:7px;flex-wrap:wrap}
+.opt .facts span{
+  font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  border:1.8px solid var(--ink);border-radius:999px;padding:4px 10px;background:var(--yellow-soft);
+}
+.opt .go{
+  margin-top:3px;display:inline-flex;align-items:center;gap:8px;align-self:flex-start;
+  font-size:13.5px;font-weight:700;border-bottom:2.5px solid var(--ink);padding-bottom:1px;
+}
+.opt .go svg{width:14px;height:14px;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+
+.opt.full{
+  grid-column:1/-1;background:var(--ink);border-color:var(--ink);color:var(--cream);
+  flex-direction:row;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.opt.full .num{background:var(--yellow);border-color:var(--yellow)}
+.opt.full .nm{font-size:19px}
+.opt.full .d{color:#E7DFC9;min-width:220px}
+.opt.full .facts span{background:rgba(255,253,246,.14);border-color:rgba(255,253,246,.5);color:var(--cream)}
+.opt.full .state{background:rgba(255,253,246,.14);border-color:rgba(255,253,246,.5);color:var(--cream)}
+.opt.full .go{border-bottom-color:var(--yellow);color:var(--yellow)}
+.opt.full .go svg{stroke:var(--yellow)}
+.opt.full .body{flex:1;min-width:240px;display:flex;flex-direction:column;gap:8px}
+
+/* ---------------- part rail ---------------- */
+.rail{flex:none;display:flex;gap:10px;flex-wrap:wrap;align-items:stretch}
+.part{
+  flex:1;min-width:190px;border:var(--line-thin);border-radius:var(--r-md);text-align:left;
+  background:rgba(255,253,246,.5);padding:9px 12px;display:flex;flex-direction:column;gap:5px;
+}
+.part:not(:disabled):hover{background:rgba(255,253,246,.85)}
+.part.now{background:var(--cream);border:var(--line);box-shadow:var(--shadow)}
+.part:disabled{opacity:.6;cursor:not-allowed}
+.part .pt{display:flex;align-items:center;gap:8px}
+.part .pn{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.part .pk{font-size:10.5px;font-weight:600;color:var(--ink-2);margin-left:auto;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:5px}
+.part .pk svg{width:11px;height:11px;fill:none;stroke:var(--ink-2);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.part .pd{font-size:11px;font-family:var(--font-read);color:var(--ink-2);line-height:1.3}
+.segs{display:flex;gap:3px}
+.seg{flex:1;height:6px;border:1.5px solid var(--ink);border-radius:999px;background:transparent}
+.seg.done{background:var(--ink)}
+.seg.now{background:var(--yellow)}
+.tick{width:16px;height:16px;border-radius:999px;border:1.8px solid var(--ink);display:grid;place-items:center;flex:none}
+.tick.on{background:var(--ink)}
+.tick svg{width:9px;height:9px;fill:none;stroke:var(--cream);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------------- screens ---------------- */
+.screens{flex:1;min-height:0;display:flex}
+.screen{flex:1;min-width:0;display:flex;flex-direction:column}
+.thread{
+  flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;
+  display:flex;flex-direction:column;gap:15px;padding:4px 4px 18px;scroll-behavior:smooth;
+}
+.turn{display:flex;flex-direction:column;gap:14px;animation:rise .28s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.intro{
+  align-self:center;width:min(620px,96%);margin-top:auto;margin-bottom:auto;
+  background:var(--cream);border:var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:24px 26px;
+}
+.intro .pin{
+  display:inline-block;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--ink);color:var(--cream);border-radius:999px;padding:6px 14px;
+}
+.intro h2{margin:13px 0 6px;font-size:27px;font-weight:800;letter-spacing:-.01em;line-height:1.15;text-wrap:balance}
+.intro .say{font-family:var(--font-read);font-size:16px;line-height:1.6;color:var(--ink-2);margin:0}
+.facts{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+.facts span{
+  font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  border:var(--line-thin);border-radius:999px;padding:6px 13px;background:var(--yellow-soft);
+}
+
+.divider{display:flex;align-items:center;gap:12px;margin:4px 0}
+.divider span{
+  font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
+  background:var(--yellow-soft);border:var(--line-thin);border-radius:999px;padding:5px 14px;flex:none;
+}
+.divider::before,.divider::after{content:'';flex:1;height:2px;background:rgba(28,21,8,.3)}
+
+.ask{position:relative;align-self:flex-start;max-width:min(640px,92%);margin-left:22px}
+.quotemark{
+  position:absolute;left:-22px;top:-14px;width:38px;height:38px;border-radius:999px;
+  background:var(--ink);color:var(--cream);display:grid;place-items:center;
+  font-size:21px;font-weight:800;line-height:1;padding-top:9px;font-family:Georgia,serif;
+}
+.bubble{
+  background:var(--cream);border:var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);padding:16px 20px;
+}
+.bubble .tag{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--olive);margin-bottom:7px}
+.bubble .say{font-family:var(--font-read);font-size:17px;line-height:1.5;margin:0}
+.askrow{display:flex;align-items:flex-start;gap:12px}
+.hearbtn{
+  flex:none;width:34px;height:34px;border:var(--line-thin);border-radius:999px;background:var(--yellow);
+  display:grid;place-items:center;margin-top:1px;
+}
+.hearbtn:hover{background:var(--yellow-deep)}
+.hearbtn svg{width:13px;height:13px;fill:var(--ink)}
+
+.dots{display:flex;gap:6px;padding:4px 0 2px}
+.dots i{width:9px;height:9px;border-radius:999px;background:var(--olive);animation:bounce 1s infinite}
+.dots i:nth-child(2){animation-delay:.16s}
+.dots i:nth-child(3){animation-delay:.32s}
+@keyframes bounce{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+
+.said{align-self:flex-end;max-width:min(620px,92%)}
+.said .bubble{background:var(--yellow-soft)}
+.said .head{display:flex;align-items:baseline;gap:14px;margin-bottom:7px}
+.said .tag{margin:0}
+.said .stamp{margin-left:auto;font-size:11.5px;font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+
+/* ---------------- cue card ---------------- */
+.cue{
+  align-self:center;width:min(560px,96%);background:var(--paper);
+  border:3px solid var(--ink);border-radius:var(--r-lg);box-shadow:0 5px 0 rgba(28,21,8,.22);padding:20px 22px;
+}
+.cue .tag{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--olive)}
+.cue h2{margin:9px 0 14px;font-family:var(--font-read);font-size:19px;font-weight:500;line-height:1.4}
+.cue .lead{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--olive);margin-bottom:7px}
+.cue ul{margin:0 0 14px;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.cue li{font-family:var(--font-read);font-size:16px;line-height:1.4}
+.cue .explain{font-family:var(--font-read);font-size:16px;line-height:1.45;margin:0;padding-top:12px;border-top:2px dashed rgba(28,21,8,.3)}
+.cue .rules{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.cue .rules span{
+  font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  border:var(--line-thin);border-radius:999px;padding:5px 12px;background:var(--yellow-soft);
+}
+
+/* ---------------- coach feedback ---------------- */
+.coach{
+  align-self:stretch;background:var(--mint);border:var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);padding:17px 19px;
+}
+.coachhead{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.coachhead .tag{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--mint-ink)}
+.pill{
+  margin-left:auto;border:var(--line-thin);border-radius:9px;background:var(--yellow-soft);
+  padding:5px 11px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+}
+.coach .note{font-family:var(--font-read);font-size:15.5px;line-height:1.6;font-weight:500;margin:0 0 14px}
+.panel{background:var(--paper);border:var(--line-thin);border-radius:var(--r-md);padding:15px 16px}
+.panel h3{margin:0;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--olive)}
+.panel .sub{font-family:var(--font-read);font-size:13px;color:var(--ink-2);margin:4px 0 0}
+.panelhead{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.conf{
+  margin-left:auto;flex:none;border:var(--line-thin);border-radius:9px;background:var(--cream-2);
+  padding:5px 11px;font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums;
+}
+.signalslab{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--olive);margin:14px 0 8px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tile{border:var(--line-thin);border-radius:var(--r-sm);padding:11px 12px;min-width:0}
+.tile .k{font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;line-height:1.3}
+.tile .v{font-size:21px;font-weight:800;line-height:1.2;margin-top:5px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.tile .v.small{font-size:15px;font-weight:700}
+.tile .n{font-size:11px;font-weight:500;margin-top:3px;font-family:var(--font-read);line-height:1.35}
+.tile.rate{background:var(--yellow-soft)}
+.tile.rate .k{color:#8A6B12}
+.tile.pause{background:var(--mint)}
+.tile.pause .k{color:var(--mint-ink)}
+.tile.filler{background:var(--pink)}
+.tile.filler .k{color:var(--pink-ink)}
+.tile.clarity{background:var(--lilac)}
+.tile.clarity .k{color:var(--lilac-ink)}
+
+.perq{margin-top:12px;border:var(--line-thin);border-radius:var(--r-sm);background:var(--cream-2);padding:12px 13px}
+.perq .k{font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--olive);margin-bottom:8px}
+.qrow{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:12.5px;border-bottom:1px dashed rgba(28,21,8,.18)}
+.qrow:last-child{border-bottom:none}
+.qrow .num{
+  font-weight:800;font-size:10.5px;background:var(--yellow-soft);border:1.6px solid var(--ink);
+  border-radius:5px;padding:1px 6px;flex:none;font-variant-numeric:tabular-nums;
+}
+.qrow .txt{flex:1;min-width:0;font-family:var(--font-read);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qrow .w{flex:none;font-weight:700;font-variant-numeric:tabular-nums}
+.qrow .flag{flex:none;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--pink-ink);background:var(--pink);border:1.6px solid var(--ink);border-radius:5px;padding:1px 6px}
+.practise{margin-top:10px;border:var(--line-thin);border-radius:var(--r-sm);background:var(--cream-2);padding:11px 13px}
+.practise .k{font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--olive)}
+.practise p{margin:5px 0 0;font-family:var(--font-read);font-size:13px;line-height:1.45;color:var(--ink-2)}
+
+/* ---------------- gate + wrap-up ---------------- */
+.gate{
+  align-self:stretch;background:var(--cream);border:var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);padding:18px 20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+}
+.gate .n{
+  width:46px;height:46px;flex:none;border-radius:999px;border:var(--line);background:var(--yellow);
+  display:grid;place-items:center;font-size:17px;font-weight:800;
+}
+.gate .t{flex:1;min-width:200px}
+.gate h2{margin:0;font-size:15px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.gate p{margin:4px 0 0;font-family:var(--font-read);font-size:14px;line-height:1.5;color:var(--ink-2)}
+
+.wrap{
+  align-self:stretch;background:var(--cream);border:var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);padding:18px 20px;
+}
+.wrap h2{margin:0;font-size:16px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.wrap .sub{font-family:var(--font-read);font-size:14px;color:var(--ink-2);margin:5px 0 14px;line-height:1.5}
+.sums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.sums{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sum{border:var(--line-thin);border-radius:var(--r-sm);background:var(--cream-2);padding:11px 12px}
+.sum .k{font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--olive)}
+.sum .v{font-size:22px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums}
+.sum .n{font-size:11px;font-family:var(--font-read);color:var(--ink-2);margin-top:2px}
+
+/* ---------------- composer ---------------- */
+.composer{
+  flex:none;background:var(--cream);border:var(--line);border-radius:var(--r-lg) var(--r-lg) 0 0;
+  border-bottom:none;padding:16px 18px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;
+}
+.micwrap,.prepwrap,.donewrap{display:flex;flex-direction:column;align-items:center;gap:6px;width:118px;flex:none}
+.mic,.donebtn{
+  width:66px;height:66px;border-radius:999px;border:var(--line);background:var(--yellow);
+  display:grid;place-items:center;box-shadow:var(--shadow);
+}
+.mic:hover,.donebtn:hover{background:var(--yellow-deep)}
+.mic:disabled{background:#EFEADA;border-color:#B6AC8E;box-shadow:none;cursor:not-allowed}
+.mic:disabled svg{stroke:#8C8268}
+.mic svg{width:25px;height:25px;fill:none;stroke:var(--ink);stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.donebtn svg{width:27px;height:27px;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.mic.live{background:var(--red-soft);border-color:var(--red);animation:pulse 1.4s ease-in-out infinite}
+.mic.live svg{stroke:var(--red)}
+@keyframes pulse{0%,100%{box-shadow:0 3px 0 rgba(28,21,8,.18)}50%{box-shadow:0 3px 0 rgba(28,21,8,.18),0 0 0 9px rgba(180,68,58,.17)}}
+.miclab{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;text-align:center;line-height:1.3}
+.michint{font-size:11px;font-family:var(--font-read);color:var(--ink-2);text-align:center;line-height:1.3;font-variant-numeric:tabular-nums}
+.prepdial{
+  width:66px;height:66px;border-radius:999px;border:var(--line);background:var(--yellow-soft);
+  display:grid;place-items:center;box-shadow:var(--shadow);
+  font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;
+}
+.prepdial.low{background:var(--pink);border-color:var(--red);color:var(--red)}
+.prepdial svg{width:26px;height:26px;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+
+.writer{flex:1;min-width:min(260px,100%);display:flex;flex-direction:column;gap:9px}
+.answerbox{
+  width:100%;min-height:88px;resize:vertical;background:var(--cream-2);color:var(--ink);
+  border:var(--line-thin);border-radius:var(--r-md);padding:13px 15px;
+  font-family:var(--font-read);font-size:15.5px;line-height:1.5;
+}
+.answerbox::placeholder{color:#9A8C66}
+.answerbox:disabled{background:#F1EDE0;color:var(--ink-2)}
+.writerbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.count{font-size:11.5px;font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.linkbtn{
+  border:none;background:none;padding:0;font-size:12px;font-weight:700;color:var(--olive);
+  text-decoration:underline;text-underline-offset:3px;
+}
+.linkbtn:hover{color:var(--ink)}
+.act{
+  margin-left:auto;display:inline-flex;align-items:center;gap:9px;flex:none;
+  border:var(--line);border-radius:12px;background:var(--yellow);box-shadow:var(--shadow);
+  padding:11px 20px;font-size:15px;font-weight:700;
+}
+.act:hover{background:var(--yellow-deep)}
+.act:disabled{background:#EFEADA;border-color:#B6AC8E;color:#8C8268;box-shadow:none;cursor:not-allowed}
+.act svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.act.ghost{background:var(--cream-2)}
+.act.ghost:hover{background:var(--yellow-soft)}
+.saved{
+  width:100%;border:var(--line-thin);border-radius:var(--r-md);background:var(--cream-2);
+  padding:15px 16px;font-family:var(--font-read);font-size:15.5px;color:var(--ink-2);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.saved span{flex:1;min-width:180px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media (max-width:620px){
+  .brand h1{font-size:16px}
+  .voicewrap{order:5;width:100%;align-items:flex-start}
+  .voicewrap .cap{display:none}
+  .voicerow{justify-content:flex-start}
+  .micwrap,.donewrap,.prepwrap{width:84px}
+  .mic,.donebtn,.prepdial{width:56px;height:56px}
+  .prepdial{font-size:16px}
+  .intro h2{font-size:22px}
+  .choosehead h2{font-size:24px}
+}
+</style>
+
+<div class="shell">
+
+  <header class="topbar">
+    <button class="iconbtn" id="backBtn" aria-label="Back to the chooser">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+    </button>
+    <button class="iconbtn" aria-label="Microphone settings">
+      <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+    </button>
+
+    <div class="brand">
+      <h1>IELTS Mock Interview</h1>
+      <div class="status"><span class="live"></span> <span id="brandSub">Choose what to practise</span></div>
+    </div>
+
+    <div class="grow"></div>
+
+    <div class="voicewrap">
+      <span class="cap">Examiner voice</span>
+      <div class="voicerow">
+        <button class="playbtn" id="replayBtn" aria-label="Replay the question">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <select class="voicesel" id="voice" aria-label="Examiner accent">
+          <option>British (UK)</option>
+          <option>American (US)</option>
+          <option>Australian (AU)</option>
+        </select>
+        <button class="iconbtn" aria-label="Mute examiner">
+          <svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM17 9.5a4 4 0 0 1 0 5M19.5 7a7 7 0 0 1 0 10"/></svg>
+        </button>
+        <span class="chip mode" id="modeChip" hidden>
+          <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> <span id="modeText">Full test</span>
+        </span>
+        <span class="chip"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          <span id="posText">Choose a part</span></span>
+        <span class="chip counter">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+          3/3 free credits / 24h
+        </span>
+        <button class="endbtn" id="endBtn">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- chooser screen -->
+  <div class="chooser" id="chooser">
+    <div class="choosehead">
+      <h2>What would you like to practise?</h2>
+      <p>Practise one part on its own, or sit the whole test from start to finish. Either way the
+         AI coach gives you feedback at the end of each part.</p>
+    </div>
+    <div class="options" id="options"></div>
+  </div>
+
+  <!-- part screens -->
+  <div class="rail" id="rail" hidden></div>
+  <div class="screens" id="screens" hidden>
+    <section class="screen" id="screen-0"><div class="thread" id="thread-0" tabindex="-1"></div></section>
+    <section class="screen" id="screen-1" hidden><div class="thread" id="thread-1" tabindex="-1"></div></section>
+    <section class="screen" id="screen-2" hidden><div class="thread" id="thread-2" tabindex="-1"></div></section>
+  </div>
+
+  <footer class="composer" id="composer" hidden></footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================ test content ============================ */
+var PARTS = [
+  {
+    name:'Part 1', desc:'Introduction and interview', kind:'questions', minutes:'4–5 minutes',
+    brief:'The examiner asks about you, your home, your work or studies, and other familiar topics. Answer naturally — two or three sentences, always with a reason.',
+    questions:[
+      { set:'Hometown', q:'Where is your hometown?',
+        sample:'My hometown is Hải Phòng, a port city in the north, about two hour from Hanoi by car. It is quite big but not so crowded like Hanoi.' },
+      { set:'Hometown', q:'What do you like most about your hometown?',
+        sample:'The food, especially the seafood. There are many small restaurant near the sea and the price is very reasonable.' },
+      { set:'Hometown', q:'Is it a good place for young people to live?',
+        sample:'Yes and no. It is comfortable and cheap to live, but there are not many opportunity for career, so a lot of my friend moved to Hanoi.' },
+      { set:'Work', q:'Do you work, or are you a student?',
+        sample:'I am working now. I am a marketing assistant for a company make cosmetics, and I have done this job for about one year and a half.' },
+      { set:'Work', q:'What do you enjoy most about your job?',
+        sample:'I enjoy working with my team because they are young and friendly. Also I can learn a lot of thing about design and social media.' },
+      { set:'Work', q:'Would you like to change your job in the future?',
+        sample:'Maybe in two or three years. I want to try a bigger company, or, um, maybe study abroad if I can save enough money.' },
+      { set:'Weather', q:'What kind of weather do you like most?',
+        sample:'I like sunny weather but not too hot. In my city it is very humid in summer, so I prefer autumn when the air is cool and dry.' },
+      { set:'Weather', q:'Does the weather affect how you feel?',
+        sample:'Yes, definitely. When it rain many days I feel tired and lazy, but on a sunny morning I have more energy to go out.' },
+      { set:'Weather', q:'Is the weather in your hometown similar to other parts of your country?',
+        sample:'Not really. My hometown is in the north so we have four season, but in the south it is hot all year with only rainy and dry season.' },
+      { set:'Weather', q:'Has the weather in your country changed in recent years?',
+        sample:'Yes, I think it changed a lot. The summer is hotter than before and the rain come at strange time, not like when I was a child.' }
+    ],
+    tip:'Phản xạ tốt, bạn trả lời ngay và không im lặng lâu. Lỗi lặp lại nhiều nhất là danh từ số nhiều sau số đếm và từ chỉ lượng: "two hours", "four seasons", "many restaurants", "a lot of things". Những câu dưới 20 từ nên kéo dài thêm một lý do hoặc ví dụ.'
+  },
+  {
+    name:'Part 2', desc:'Individual long turn', kind:'cue', minutes:'3–4 minutes',
+    brief:'You get a task card. You have one minute to prepare and may write notes, then you speak on your own for one to two minutes. The examiner will not interrupt you.',
+    cue:{
+      title:'Describe a skill you would like to learn.',
+      bullets:['what the skill is','how you would learn it','how long it would take to learn'],
+      explain:'And explain why you want to learn this skill.'
+    },
+    sample:'I would like to talk about playing the guitar, because it is a skill I have wanted for a long time but I never had enough time to learn it properly. I think I would learn it by watching video on YouTube first, and maybe later I will join a small class near my house, because practicing with a teacher is more effective than practicing alone. I think it would take about one year to play some simple song, but to play really well it will take much longer, maybe three or four year. The reason I want to learn it is because music make me relax after a stressful day at work, and I also think it would be a good skill to have at parties with my friends.',
+    tip:'Bạn nói gần đủ hai phút và bao quát cả bốn ý trên cue card — đây là điều giám khảo nhìn vào đầu tiên. Cần chú ý thì khi nói về dự định: "I would join" chứ không phải "I will join", và "three or four years".'
+  },
+  {
+    name:'Part 3', desc:'Two-way discussion', kind:'questions', minutes:'4–5 minutes',
+    brief:'The examiner asks broader questions linked to the Part 2 topic. Give reasons, examples and more than one point of view — these answers should be longer than in Part 1.',
+    questions:[
+      { set:'Learning & technology', q:'Do you think people learn new skills differently now compared to the past?',
+        sample:'Definitely, it is very different now. In the past you must go to a class or find a teacher, but now you can learn almost everything on the internet. My father learned to repair his motorbike just from watching video. But the problem is people give up more easy now, because nobody is checking on them.' },
+      { set:'Learning & technology', q:"What kinds of skills should schools teach that they don't teach now?",
+        sample:'I think schools should teach more practical thing like managing money, or how to speak in front of people. When I left school I did not know anything about tax or saving and I had to learn it myself, which was quite stressful.' },
+      { set:'Learning & technology', q:'Is it ever too late for someone to learn a new skill?',
+        sample:'No, I do not think so. My mother started to learn English when she was fifty and now she can talk with foreign customer quite confident. Maybe it takes more time when you are older, but it is never impossible.' },
+      { set:'Learning & technology', q:'Should employers pay for their staff to learn new skills?',
+        sample:'Yes, I think it is good for both side. If the company pay for training, the staff will be more loyal and also more skillful, so the company get benefit too. But some employer worry that people will leave after they finish the course.' },
+      { set:'Learning & technology', q:'Which is more useful, learning from a teacher or learning on your own?',
+        sample:'It depend on the skill. For language I think a teacher is better because they correct your mistake immediately, but for computer skill you can learn alone with video and a lot of practice.' }
+    ],
+    tip:'Ý tưởng tốt và luôn có ví dụ thật — đây là điểm mạnh của bạn ở Part 3. Hãy dùng trạng từ thay cho tính từ: "quite confidently", "more easily", và mở rộng câu trả lời bằng "on the other hand" hoặc "that said".'
+  }
+];
+
+var FILLERS = ['um','uh','er','ah','like','you know','i mean','sort of','kind of','actually','basically','well'];
+var PREP_SECONDS = 60, SHORT_ANSWER = 20;
+
+/* ============================ state ============================ */
+var S = PARTS.map(function(){
+  return { phase:'intro', q:0, log:[], seconds:0, recording:false, draft:'', notes:'', prepLeft:PREP_SECONDS };
+});
+var mode = 'choose';        /* choose | single | full */
+var screen = 0, timer = null, prepTimer = null, testDone = false;
+
+var composer = document.getElementById('composer');
+function st(){ return S[screen]; }
+function part(){ return PARTS[screen]; }
+function thread(i){ return document.getElementById('thread-' + (i === undefined ? screen : i)); }
+function qCount(p){ return p.kind === 'cue' ? 1 : p.questions.length; }
+function words(t){ return t.trim().split(/\s+/).filter(Boolean); }
+function clock(s){ return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0'); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function scrollDown(){ var t = thread(); if (t) requestAnimationFrame(function(){ t.scrollTop = t.scrollHeight; }); }
+function countFillers(text){
+  var low = ' ' + text.toLowerCase().replace(/[.,!?;:]/g,' ') + ' ', n = 0;
+  FILLERS.forEach(function(f){
+    var m = low.match(new RegExp('\\s' + f.replace(/ /g,'\\s+') + '\\s','g'));
+    if (m) n += m.length;
+  });
+  return n;
+}
+function stopTimers(){ clearInterval(timer); clearInterval(prepTimer); timer = prepTimer = null; }
+function done(i){ return S[i].log.length === qCount(PARTS[i]); }
+
+/* ============================ chooser ============================ */
+function renderChooser(){
+  var html = PARTS.map(function(p,i){
+    var d = done(i), n = S[i].log.length;
+    return '<button class="opt" data-part="' + i + '">'
+      + '<span class="top"><span class="num">' + p.name.replace('Part ','') + '</span>'
+      + '<span class="nm">' + p.name + '<br>' + esc(p.desc) + '</span>'
+      + '<span class="state' + (d ? ' done' : '') + '">' + (d ? 'Done' : (n ? n + '/' + qCount(p) : 'Not started')) + '</span></span>'
+      + '<p class="d">' + esc(p.brief) + '</p>'
+      + '<span class="facts"><span>' + p.minutes + '</span>'
+      + '<span>' + (p.kind === 'cue' ? '1 task card' : qCount(p) + ' questions') + '</span></span>'
+      + '<span class="go">Practise ' + p.name
+      + ' <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>';
+  }).join('');
+
+  var allDone = PARTS.every(function(p,i){ return done(i); });
+  html += '<button class="opt full" data-full="1">'
+    + '<span class="num"><svg viewBox="0 0 24 24" style="width:19px;height:19px;fill:none;stroke:#1C1508;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round"><path d="M5 13l4 4L19 7"/></svg></span>'
+    + '<span class="body">'
+      + '<span class="top"><span class="nm">Take the full test</span>'
+      + '<span class="state">' + (allDone ? 'Completed' : 'Parts 1, 2 and 3 in order') + '</span></span>'
+      + '<p class="d">The real thing, start to finish. Part 2 only opens once Part 1 is finished, and '
+      + 'Part 3 once Part 2 is done — you cannot skip ahead or go back.</p>'
+      + '<span class="facts"><span>About 14 minutes</span><span>16 turns</span><span>Feedback after every part</span></span>'
+      + '<span class="go">Start the full test'
+      + ' <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>'
+    + '</span></button>';
+
+  document.getElementById('options').innerHTML = html;
+  document.querySelectorAll('[data-part]').forEach(function(b){
+    b.addEventListener('click', function(){ openPart(+b.dataset.part, 'single'); });
+  });
+  document.querySelector('[data-full]').addEventListener('click', startFullTest);
+}
+
+function showChooser(){
+  stopTimers();
+  if (st() && st().recording) st().recording = false;
+  mode = 'choose';
+  document.getElementById('chooser').hidden = false;
+  document.getElementById('rail').hidden = true;
+  document.getElementById('screens').hidden = true;
+  composer.hidden = true;
+  document.getElementById('modeChip').hidden = true;
+  document.getElementById('posText').textContent = 'Choose a part';
+  document.getElementById('brandSub').textContent = 'Choose what to practise';
+  renderChooser();
+}
+
+function openPart(i, m){
+  mode = m;
+  document.getElementById('chooser').hidden = true;
+  document.getElementById('rail').hidden = false;
+  document.getElementById('screens').hidden = false;
+  composer.hidden = false;
+  document.getElementById('modeChip').hidden = m !== 'full';
+  document.getElementById('modeText').textContent = 'Full test';
+  document.getElementById('screen-' + screen).hidden = true;
+  screen = i;
+  document.getElementById('screen-' + screen).hidden = false;
+  if (st().phase === 'prep') st().phase = 'answering';
+  renderRail();
+  renderComposer();
+  scrollDown();
+}
+
+function startFullTest(){
+  stopTimers();
+  S = PARTS.map(function(){
+    return { phase:'intro', q:0, log:[], seconds:0, recording:false, draft:'', notes:'', prepLeft:PREP_SECONDS };
+  });
+  testDone = false;
+  PARTS.forEach(function(p,i){ thread(i).innerHTML = ''; showIntro(i); });
+  screen = 0;
+  document.getElementById('screen-1').hidden = true;
+  document.getElementById('screen-2').hidden = true;
+  document.getElementById('screen-0').hidden = false;
+  openPart(0, 'full');
+}
+
+/* ============================ rail ============================ */
+function renderRail(){
+  document.getElementById('rail').innerHTML = PARTS.map(function(p,i){
+    var s = S[i], total = qCount(p), n = s.log.length, segs = '';
+    var locked = mode === 'full' && i > screen && !done(i);
+    for (var k = 0; k < total; k++){
+      segs += '<span class="seg ' + (k < n ? 'done' : (i === screen && k === s.q && s.phase !== 'intro' && s.phase !== 'feedback' ? 'now' : '')) + '"></span>';
+    }
+    return '<button class="part' + (i === screen ? ' now' : '') + '" data-go="' + i + '"'
+      + (locked ? ' disabled' : '') + ' aria-current="' + (i === screen) + '">'
+      + '<span class="pt"><span class="tick' + (n === total ? ' on' : '') + '">'
+        + (n === total ? '<svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>' : '') + '</span>'
+      + '<span class="pn">' + p.name + '</span>'
+      + '<span class="pk">' + (locked
+          ? '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Locked'
+          : n + '/' + total) + '</span></span>'
+      + '<span class="segs">' + segs + '</span>'
+      + '<span class="pd">' + p.desc + '</span></button>';
+  }).join('');
+  document.querySelectorAll('[data-go]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var i = +b.dataset.go;
+      if (i !== screen) goScreen(i);
+    });
+  });
+
+  var p = part(), s = st(), txt;
+  if (testDone) txt = 'Test complete';
+  else if (s.phase === 'intro') txt = p.name + ' · not started';
+  else if (s.phase === 'feedback') txt = p.name + ' · feedback';
+  else if (p.kind === 'cue') txt = p.name + ' · long turn';
+  else txt = p.name + ' · ' + Math.min(s.q + 1, p.questions.length) + '/' + p.questions.length;
+  document.getElementById('posText').textContent = txt;
+  document.getElementById('brandSub').textContent =
+    (mode === 'full' ? 'Full test · ' : 'Practising ') + p.name + ' · ' + p.desc;
+}
+
+function goScreen(i){
+  if (st().recording) toggleRecord();
+  stopTimers();
+  document.getElementById('screen-' + screen).hidden = true;
+  screen = i;
+  document.getElementById('screen-' + screen).hidden = false;
+  if (st().phase === 'prep') st().phase = 'answering';
+  renderRail();
+  renderComposer();
+  scrollDown();
+}
+
+/* ============================ thread blocks ============================ */
+function showIntro(i){
+  var p = PARTS[i];
+  var el = document.createElement('div');
+  el.className = 'turn intro';
+  el.innerHTML = '<span class="pin">' + p.name + '</span>'
+    + '<h2>' + esc(p.desc) + '</h2>'
+    + '<p class="say">' + esc(p.brief) + '</p>'
+    + '<div class="facts"><span>' + p.minutes + '</span>'
+    + '<span>' + (p.kind === 'cue' ? '1 task card' : qCount(p) + ' questions') + '</span>'
+    + '<span>' + (p.kind === 'cue' ? '1 min to prepare' : 'Asked one after another') + '</span>'
+    + '<span>Feedback at the end</span></div>';
+  thread(i).appendChild(el);
+}
+
+function divider(label){
+  var d = document.createElement('div');
+  d.className = 'divider';
+  d.innerHTML = '<span>' + esc(label) + '</span>';
+  thread().appendChild(d);
+}
+
+function askQuestion(){
+  var p = part(), s = st(), q = p.questions[s.q], n = s.q + 1, mine = screen;
+  if (s.q === 0 || p.questions[s.q - 1].set !== q.set) divider(p.name + ' · ' + q.set);
+
+  var turn = document.createElement('div');
+  turn.className = 'turn';
+  turn.innerHTML = '<div class="ask"><div class="quotemark">&rdquo;</div><div class="bubble">'
+    + '<div class="tag">Examiner · Question ' + n + ' of ' + p.questions.length + '</div>'
+    + '<div class="dots" aria-label="The examiner is speaking"><i></i><i></i><i></i></div>'
+    + '</div></div>';
+  thread().appendChild(turn);
+  scrollDown();
+
+  setTimeout(function(){
+    turn.querySelector('.bubble').innerHTML =
+      '<div class="tag">Examiner · Question ' + n + ' of ' + p.questions.length + '</div>'
+      + '<div class="askrow">'
+      + '<button class="hearbtn" aria-label="Hear the question again"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>'
+      + '<p class="say">' + esc(q.q) + '</p></div>';
+    S[mine].phase = 'answering';
+    if (screen === mine && mode !== 'choose'){ renderComposer(); scrollDown(); }
+  }, 950);
+}
+
+function showCue(){
+  var c = part().cue;
+  var el = document.createElement('div');
+  el.className = 'turn cue';
+  el.innerHTML = '<div class="tag">Examiner · Candidate task card</div>'
+    + '<h2>' + esc(c.title) + '</h2>'
+    + '<div class="lead">You should say:</div>'
+    + '<ul>' + c.bullets.map(function(b){ return '<li>' + esc(b) + '</li>'; }).join('') + '</ul>'
+    + '<p class="explain">' + esc(c.explain) + '</p>'
+    + '<div class="rules"><span>1 minute to prepare</span><span>Speak for 1–2 minutes</span><span>Notes allowed</span></div>';
+  thread().appendChild(el);
+  scrollDown();
+  startPrep();
+}
+
+function addAnswer(text, secs, label){
+  var el = document.createElement('div');
+  el.className = 'turn said';
+  el.innerHTML = '<div class="bubble"><div class="head">'
+    + '<div class="tag">You · ' + esc(label) + '</div>'
+    + '<span class="stamp">' + clock(secs) + '</span></div>'
+    + '<p class="say">' + esc(text) + '</p></div>';
+  thread().appendChild(el);
+  scrollDown();
+}
+
+/* ============================ feedback ============================ */
+function addPartFeedback(){
+  var p = part(), mine = screen, answers = S[mine].log;
+  var el = document.createElement('div');
+  el.className = 'turn coach';
+  el.innerHTML = '<div class="coachhead"><span class="tag">AI coach feedback · ' + p.name + '</span>'
+    + '<span class="pill">Analysing ' + answers.length + ' answer' + (answers.length > 1 ? 's' : '') + '…</span></div>'
+    + '<div class="dots"><i></i><i></i><i></i></div>';
+  thread(mine).appendChild(el);
+  scrollDown();
+
+  setTimeout(function(){
+    var tw = 0, ts = 0, tf = 0;
+    answers.forEach(function(a){ tw += a.words; ts += a.secs; tf += countFillers(a.text); });
+    var wpm = ts > 3 ? Math.round(tw / (ts / 60)) : null;
+    var pauses = ts > 3 ? Math.max(0, Math.round(ts / 14) - Math.round(tw / 42)) : null;
+    var conf = ts > 3 ? Math.min(92, 40 + Math.round(tw / 3)) : 20;
+    var short = answers.filter(function(a){ return a.words < SHORT_ANSWER; }).length;
+
+    var rows = '';
+    if (p.kind === 'questions'){
+      rows = '<div class="perq"><div class="k">Answer length · every question in ' + p.name + '</div>'
+        + answers.map(function(a,i){
+            return '<div class="qrow"><span class="num">Q' + (i+1) + '</span>'
+              + '<span class="txt">' + esc(p.questions[i].q) + '</span>'
+              + '<span class="w">' + a.words + 'w</span>'
+              + (a.words < SHORT_ANSWER ? '<span class="flag">Too short</span>' : '') + '</div>';
+          }).join('') + '</div>';
+    }
+
+    el.innerHTML =
+      '<div class="coachhead"><span class="tag">AI coach feedback · ' + p.name + '</span>'
+      + '<span class="pill">' + (ts > 3 ? p.name + ' complete' : 'Fallback feedback') + '</span></div>'
+      + '<p class="note">' + esc(ts > 3 ? p.tip
+          : 'Mình đã lưu file nói, nhưng cần transcript để AI phản hồi nội dung câu trả lời.')
+      + (short > 0 && p.kind === 'questions' && ts > 3
+          ? ' <strong>' + short + ' câu trả lời còn quá ngắn</strong> (dưới ' + SHORT_ANSWER + ' từ).' : '') + '</p>'
+      + '<div class="panel">'
+        + '<div class="panelhead"><div><h3>Pronunciation coach · Fluency signals</h3>'
+        + '<p class="sub">Measured across every answer in ' + p.name + '. Practice signals, not an absolute IELTS Pronunciation band.</p></div>'
+        + '<span class="conf">Confidence ' + conf + '%</span></div>'
+        + '<div class="signalslab">Fluency signals · whole part</div>'
+        + '<div class="tiles">'
+          + tile('rate','Speaking rate · wpm', wpm === null ? '—' : wpm,
+                 wpm === null ? 'Not enough data' : (wpm < 95 ? 'A little slow' : wpm > 165 ? 'Rushing slightly' : 'Natural pace'), wpm === null)
+          + tile('pause','Long pauses', pauses === null ? '—' : pauses,
+                 pauses === null ? 'No audio signal' : (pauses === 0 ? 'None over 3s' : 'Over 3 seconds'), pauses === null)
+          + tile('filler','Filler words', tf, tf === 0 ? 'None detected' : 'Across ' + answers.length + ' answer' + (answers.length > 1 ? 's' : ''), false)
+          + tile('clarity','Pronunciation clarity','Not analyzed','Requires a phoneme model', true)
+        + '</div>' + rows
+        + '<div class="practise"><div class="k">Words to practise</div>'
+        + '<p>Words to practise, final sounds, stress, and intonation will be added with phoneme analysis; the system does not guess them.</p></div>'
+      + '</div>';
+
+    S[mine].phase = 'feedback';
+    if (mode === 'full'){
+      if (mine < PARTS.length - 1) addGate(mine);
+      else { addWrapUp(mine); testDone = true; }
+    }
+    renderRail();
+    if (screen === mine){ renderComposer(); scrollDown(); }
+  }, 1100);
+}
+
+function tile(cls, k, v, n, small){
+  return '<div class="tile ' + cls + '"><div class="k">' + k + '</div>'
+    + '<div class="v' + (small ? ' small' : '') + '">' + v + '</div>'
+    + '<div class="n">' + n + '</div></div>';
+}
+
+function addGate(i){
+  var next = PARTS[i + 1];
+  var el = document.createElement('div');
+  el.className = 'turn gate';
+  el.innerHTML = '<div class="n">' + next.name.replace('Part ','') + '</div>'
+    + '<div class="t"><h2>' + next.name + ' is now unlocked · ' + esc(next.desc) + '</h2>'
+    + '<p>' + esc(next.brief) + ' ' + next.minutes + '.</p></div>';
+  thread(i).appendChild(el);
+}
+
+function addWrapUp(i){
+  var tw = 0, ts = 0, tf = 0, answered = 0, total = 0, parts = 0;
+  PARTS.forEach(function(p,k){
+    total += qCount(p);
+    if (done(k)) parts++;
+    S[k].log.forEach(function(a){ tw += a.words; ts += a.secs; tf += countFillers(a.text); answered++; });
+  });
+  var el = document.createElement('div');
+  el.className = 'turn wrap';
+  el.innerHTML = '<h2>Speaking test complete</h2>'
+    + '<p class="sub">You answered ' + answered + ' of ' + total + ' turns across all three parts, in order. '
+    + 'Every recording is saved — a teacher can review them and give the official band.</p>'
+    + '<div class="sums">'
+      + '<div class="sum"><div class="k">Parts finished</div><div class="v">' + parts + '/3</div><div class="n">Part 1, 2 and 3</div></div>'
+      + '<div class="sum"><div class="k">Time spoken</div><div class="v">' + clock(ts) + '</div><div class="n">Whole test</div></div>'
+      + '<div class="sum"><div class="k">Words</div><div class="v">' + tw + '</div><div class="n">' + (ts > 3 ? Math.round(tw/(ts/60)) : '—') + ' wpm average</div></div>'
+      + '<div class="sum"><div class="k">Filler words</div><div class="v">' + tf + '</div><div class="n">Whole test</div></div>'
+    + '</div>';
+  thread(i).appendChild(el);
+}
+
+/* ============================ composer ============================ */
+function renderComposer(){
+  var p = part(), s = st();
+  if (s.phase === 'intro') return renderIntroBar();
+  if (s.phase === 'prep') return renderPrep();
+  if (s.phase === 'feedback') return renderAfter();
+
+  var answering = s.phase === 'answering', isCue = p.kind === 'cue';
+  var hint = s.recording ? clock(s.seconds) + (isCue ? ' / 2:00' : ' · tap to stop')
+            : (s.seconds > 0 ? clock(s.seconds) + ' saved' : 'Tap to answer');
+
+  composer.innerHTML =
+    '<div class="micwrap">'
+      + '<button class="mic' + (s.recording ? ' live' : '') + '" id="micBtn"' + (answering ? '' : ' disabled') + ' aria-label="Record your answer">'
+        + '<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>'
+      + '<span class="miclab" id="micLab">' + (s.recording ? 'Recording' : (s.seconds > 0 ? 'Recorded' : 'Ready')) + '</span>'
+      + '<span class="michint" id="micHint">' + hint + '</span>'
+    + '</div>'
+    + '<div class="writer">'
+      + '<textarea class="answerbox" id="answer" ' + (answering ? '' : 'disabled ')
+        + 'placeholder="' + (isCue ? 'Speak for one to two minutes. Your speech appears here as you talk.'
+                                   : 'Your speech appears here as you talk. You can correct it before sending.') + '"></textarea>'
+      + '<div class="writerbar">'
+        + '<span class="count" id="count">0 words</span>'
+        + '<button class="linkbtn" id="sampleBtn">Load sample answer</button>'
+        + '<button class="act" id="sendBtn" disabled>'
+        + (isCue ? 'Finish long turn' : (s.q + 1 < p.questions.length ? 'Next question' : 'Finish ' + p.name))
+        + ' <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>'
+      + '</div>'
+    + '</div>';
+
+  var box = document.getElementById('answer');
+  box.value = s.draft || '';
+  updateCount();
+  box.addEventListener('input', function(){ s.draft = box.value; updateCount(); });
+  document.getElementById('micBtn').addEventListener('click', toggleRecord);
+  document.getElementById('sampleBtn').addEventListener('click', loadSample);
+  document.getElementById('sendBtn').addEventListener('click', send);
+}
+
+function renderIntroBar(){
+  var p = part();
+  composer.innerHTML =
+    '<div class="prepwrap"><div class="prepdial">' + p.name.replace('Part ','') + '</div>'
+      + '<span class="miclab">' + p.name + '</span><span class="michint">Not started</span></div>'
+    + '<div class="writer">'
+      + '<div class="saved"><span>' + esc(p.brief) + '</span>'
+        + '<button class="act" id="beginBtn">Begin ' + p.name
+        + ' <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>'
+      + '<div class="writerbar"><span class="count">' + p.minutes + ' · '
+        + (p.kind === 'cue' ? '1 task card' : qCount(p) + ' questions, asked one after another') + '</span>'
+      + (mode === 'single' ? '<button class="linkbtn" id="chooseBtn">Choose a different part</button>' : '')
+      + '</div>'
+    + '</div>';
+  document.getElementById('beginBtn').addEventListener('click', beginPart);
+  var c = document.getElementById('chooseBtn');
+  if (c) c.addEventListener('click', showChooser);
+}
+
+function renderPrep(){
+  var s = st();
+  composer.innerHTML =
+    '<div class="prepwrap">'
+      + '<div class="prepdial' + (s.prepLeft <= 15 ? ' low' : '') + '" id="prepDial">' + clock(s.prepLeft) + '</div>'
+      + '<span class="miclab">Preparing</span><span class="michint">1 minute</span></div>'
+    + '<div class="writer">'
+      + '<textarea class="answerbox" id="notes" placeholder="Make notes here, as you would on the paper the examiner gives you. Notes are not graded."></textarea>'
+      + '<div class="writerbar"><span class="count">Notes are private</span>'
+        + '<button class="act" id="startBtn">Start speaking now'
+        + ' <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>'
+    + '</div>';
+  var n = document.getElementById('notes');
+  n.value = s.notes;
+  n.addEventListener('input', function(){ s.notes = n.value; });
+  document.getElementById('startBtn').addEventListener('click', endPrep);
+}
+
+function renderAfter(){
+  var p = part(), s = st(), last = screen === PARTS.length - 1;
+  var full = mode === 'full';
+  composer.innerHTML =
+    '<div class="prepwrap">'
+      + '<div class="prepdial"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>'
+      + '<span class="miclab">' + p.name + ' done</span>'
+      + '<span class="michint">' + s.log.length + ' saved</span></div>'
+    + '<div class="writer">'
+      + '<div class="saved"><span>' + (full && last
+          ? 'The interview is complete. All speaking files have been saved.'
+          : full ? 'Read your ' + p.name + ' feedback above. ' + PARTS[screen + 1].name + ' is unlocked.'
+                 : p.name + ' is complete. All speaking files have been saved.') + '</span>'
+        + '<button class="act" id="contBtn">' + (full && !last
+            ? 'Start ' + PARTS[screen + 1].name + ' <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+            : '<svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Finish') + '</button></div>'
+      + '<div class="writerbar">'
+        + '<span class="count">' + s.log.reduce(function(n,a){ return n + a.words; },0) + ' words in ' + p.name + '</span>'
+        + '<button class="linkbtn" id="redoBtn">Practise ' + p.name + ' again</button>'
+        + '<button class="act ghost" id="homeBtn">'
+        + '<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg> Choose another part</button>'
+      + '</div>'
+    + '</div>';
+  document.getElementById('redoBtn').addEventListener('click', function(){ resetPart(screen); });
+  document.getElementById('homeBtn').addEventListener('click', showChooser);
+  document.getElementById('contBtn').addEventListener('click', function(){
+    if (full && !last) goScreen(screen + 1);
+    else document.getElementById('contBtn').innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Saved';
+  });
+}
+
+function updateCount(){
+  var box = document.getElementById('answer');
+  if (!box) return;
+  var n = words(box.value).length;
+  document.getElementById('count').textContent = n + (n === 1 ? ' word' : ' words');
+  var b = document.getElementById('sendBtn');
+  if (b) b.disabled = n === 0;
+}
+
+/* ============================ actions ============================ */
+function beginPart(){
+  var p = part(), s = st();
+  thread().innerHTML = '';
+  s.phase = 'asking';
+  renderRail();
+  renderComposer();
+  if (p.kind === 'cue') setTimeout(showCue, 300);
+  else setTimeout(askQuestion, 300);
+}
+
+function toggleRecord(){
+  var s = st(), isCue = part().kind === 'cue';
+  if (s.recording){
+    s.recording = false;
+    clearInterval(timer); timer = null;
+    var b = document.getElementById('micBtn');
+    if (b){
+      b.className = 'mic';
+      document.getElementById('micLab').textContent = 'Recorded';
+      document.getElementById('micHint').textContent = clock(s.seconds) + ' saved';
+    }
+  } else {
+    s.recording = true;
+    s.seconds = 0;
+    document.getElementById('micBtn').className = 'mic live';
+    document.getElementById('micLab').textContent = 'Recording';
+    timer = setInterval(function(){
+      s.seconds++;
+      var h = document.getElementById('micHint');
+      if (h) h.textContent = clock(s.seconds) + (isCue ? ' / 2:00' : ' · tap to stop');
+      if (isCue && s.seconds >= 120) toggleRecord();
+    }, 1000);
+  }
+}
+
+function startPrep(){
+  var s = st();
+  s.phase = 'prep';
+  s.prepLeft = PREP_SECONDS;
+  renderRail();
+  renderComposer();
+  prepTimer = setInterval(function(){
+    s.prepLeft--;
+    var d = document.getElementById('prepDial');
+    if (d){
+      d.textContent = clock(s.prepLeft);
+      d.className = 'prepdial' + (s.prepLeft <= 15 ? ' low' : '');
+    }
+    if (s.prepLeft <= 0) endPrep();
+  }, 1000);
+}
+
+function endPrep(){
+  clearInterval(prepTimer); prepTimer = null;
+  st().phase = 'answering';
+  renderRail();
+  renderComposer();
+}
+
+function loadSample(){
+  var p = part(), s = st(), box = document.getElementById('answer');
+  box.value = p.kind === 'cue' ? p.sample : p.questions[s.q].sample;
+  s.draft = box.value;
+  if (s.seconds === 0){
+    s.seconds = Math.round(words(box.value).length / (p.kind === 'cue' ? 1.3 : 2.1));
+    document.getElementById('micLab').textContent = 'Recorded';
+    document.getElementById('micHint').textContent = clock(s.seconds) + ' saved';
+  }
+  updateCount();
+  box.focus();
+}
+
+function send(){
+  var p = part(), s = st(), box = document.getElementById('answer');
+  var text = box.value.trim();
+  if (!text) return;
+  if (s.recording) toggleRecord();
+
+  s.log.push({ text:text, words:words(text).length, secs:s.seconds });
+  addAnswer(text, s.seconds, p.kind === 'cue' ? 'Long turn' : 'Question ' + (s.q + 1));
+  s.draft = '';
+  s.seconds = 0;
+
+  if (p.kind === 'questions' && s.q + 1 < p.questions.length){
+    s.q++;
+    s.phase = 'asking';
+    renderRail();
+    renderComposer();
+    setTimeout(askQuestion, 450);
+  } else {
+    s.phase = 'analysing';
+    renderRail();
+    renderComposer();
+    addPartFeedback();
+  }
+}
+
+function resetPart(i){
+  stopTimers();
+  S[i] = { phase:'intro', q:0, log:[], seconds:0, recording:false, draft:'', notes:'', prepLeft:PREP_SECONDS };
+  thread(i).innerHTML = '';
+  showIntro(i);
+  testDone = false;
+  renderRail();
+  if (screen === i) renderComposer();
+}
+
+document.getElementById('backBtn').addEventListener('click', showChooser);
+document.getElementById('endBtn').addEventListener('click', function(){
+  stopTimers();
+  S = PARTS.map(function(){
+    return { phase:'intro', q:0, log:[], seconds:0, recording:false, draft:'', notes:'', prepLeft:PREP_SECONDS };
+  });
+  testDone = false;
+  PARTS.forEach(function(p,i){ thread(i).innerHTML = ''; showIntro(i); });
+  showChooser();
+});
+document.getElementById('replayBtn').addEventListener('click', scrollDown);
+
+PARTS.forEach(function(p,i){ showIntro(i); });
+showChooser();
+})();
+</script>

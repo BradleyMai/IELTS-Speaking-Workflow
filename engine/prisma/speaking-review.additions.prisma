@@ -1,0 +1,115 @@
+// ---------------------------------------------------------------------------
+// Speaking review engine — additive models.
+// Paste these into prisma/schema.prisma (anywhere after the SpeakingAttempt /
+// SpeakingMockSession / User models). Nothing here touches existing fields —
+// SpeakingAttempt and SpeakingMockSession are extended only with back-relations.
+//
+// After pasting:
+//   npx prisma migrate dev --name speaking_review_engine   (local)
+//   npx prisma migrate deploy                              (CI/Vercel, already in vercel-build)
+// ---------------------------------------------------------------------------
+
+// Add these three relation fields to the EXISTING `model SpeakingAttempt { ... }` block:
+//
+//   transcriptSegments SpeakingAttemptTranscriptSegment[]
+//   marks              SpeakingAttemptMark[]
+//   review             SpeakingAttemptReview?
+//
+// Add this one relation field to the EXISTING `model SpeakingMockSession { ... }` block:
+//
+//   review SpeakingMockSessionReview?
+
+/// Timestamped transcript chunks for one SpeakingAttempt's recording.
+/// Produced by the transcription step (reuses transcribeAudioWithProvider,
+/// the same provider chain already used for Listening authoring) — see
+/// src/lib/speaking-review/pipeline.ts. Absent until the attempt has been
+/// analyzed at least once.
+model SpeakingAttemptTranscriptSegment {
+  id           String  @id @default(cuid())
+  attemptId    String
+  startSeconds Float
+  endSeconds   Float?
+  text         String
+  order        Int
+
+  attempt SpeakingAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId, order])
+}
+
+/// One flagged mistake (or teacher annotation) positioned at a point in the
+/// attempt's own audio timeline. `source: "ai"` rows are produced by the
+/// pluggable SpeakingReviewGradingProvider (see provider.ts); `source:
+/// "teacher"` rows are created live from the review UI (F/L/G/P keys).
+model SpeakingAttemptMark {
+  id           String   @id @default(cuid())
+  attemptId    String
+  source       String // "ai" | "teacher"
+  category     String // "Fluency" | "Lexical" | "Grammar" | "Pronunciation"
+  timeSeconds  Float
+  originalText String
+  suggestedFix String?
+  status       String   @default("pending") // "pending" | "kept" | "dismissed"
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  attempt SpeakingAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId])
+  @@index([attemptId, status])
+}
+
+/// Teacher's working state for one SpeakingAttempt: band overrides (seeded
+/// from the AI's own suggestion, editable), free-text note, draft/final
+/// status. Kept separate from SpeakingAttempt's own score fields so the
+/// AI's original suggestion (still visible in feedbackJson) is never
+/// clobbered until the teacher explicitly finalizes.
+model SpeakingAttemptReview {
+  id              String    @id @default(cuid())
+  attemptId       String    @unique
+  reviewerId      String
+  fluency         Float?
+  lexicalResource Float?
+  grammar         Float?
+  pronunciation   Float?
+  overallBand     Float?
+  note            String    @default("")
+  status          String    @default("draft") // "draft" | "final"
+  finalizedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  attempt  SpeakingAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  reviewer User            @relation("SpeakingAttemptReviewer", fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId])
+  @@index([reviewerId])
+}
+
+/// Test-level (session-level) review wrapper: who is grading it, whether
+/// it's been returned to the student yet, and the rolled-up overall band.
+model SpeakingMockSessionReview {
+  id          String    @id @default(cuid())
+  sessionId   String    @unique
+  reviewerId  String
+  status      String    @default("in_progress") // "in_progress" | "returned"
+  overallBand Float?
+  returnedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  session  SpeakingMockSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  reviewer User                @relation("SpeakingMockSessionReviewer", fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([reviewerId])
+}
+
+// NOTE on the two named relations above (SpeakingAttemptReviewer /
+// SpeakingMockSessionReviewer): User already has relations to
+// SpeakingAttempt and SpeakingMockSession as the *student* (via userId).
+// These new relations are the *reviewing teacher*, so they're named to
+// avoid Prisma's "ambiguous relation" error against the existing
+// `user User @relation(fields: [userId], ...)` fields. If your User model
+// uses a different relation-naming convention elsewhere, match that
+// instead.

@@ -1,0 +1,288 @@
+<mxfile host="app.diagrams.net" modified="2026-09-21T00:00:00.000Z" agent="Claude" version="24.0.0" type="device">
+  <diagram name="Speaking Review Engine" id="speaking-review-engine">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1650" pageHeight="1150" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===================== TITLE ===================== -->
+        <mxCell id="title1" value="Speaking Review Engine — Module Map" style="text;html=1;fontSize=20;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="0" width="700" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== PAGE (ENTRY) ===================== -->
+        <mxCell id="page1" value="page.tsx (Server Component)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontSize=13;fontStyle=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=2;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="200" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="page1_fn1" value="SpeakingGradingPage({ params })&#10;— awaits sessionId, calls the action, renders the panel" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6C8EBF;" vertex="1" parent="1">
+          <mxGeometry x="60" y="80" width="160" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== TYPES ===================== -->
+        <mxCell id="types1" value="types/speaking-review.ts (shared DTOs)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontSize=13;fontStyle=1;fillColor=#F5F5F5;strokeColor=#999999;strokeWidth=2;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="180" width="200" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="types1_fn1" value="emptyBandSet()" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="55" y="212" width="170" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="types1_fn2" value="isBandSetComplete(bands)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="55" y="254" width="170" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="types1_fn3" value="averageBandSet(bands)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="55" y="296" width="170" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="types1_note" value="+ SpeakingReview* DTO types&#10;(Attempt, Chunk, Mark, Segment, BandSet)" style="text;html=1;fontSize=10;fontStyle=2;align=center;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="55" y="340" width="170" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== SERVER ACTIONS ===================== -->
+        <mxCell id="actions1" value="app/actions/speaking-grading-review.ts (Server Actions — CRUD)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontSize=13;fontStyle=1;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=2;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="300" y="40" width="300" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="actions1_fn0" value="requireReviewer()  — auth guard&#10;(TODO: real role/org check)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#82B366;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="320" y="78" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actions1_fn1" value="getSpeakingMockSessionForReview(sessionId)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="320" y="128" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actions1_fn2" value="saveSpeakingAttemptReviewBands(input)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="320" y="178" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actions1_fn3" value="saveSpeakingAttemptReviewNote(input)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="320" y="228" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actions1_fn4" value="setSpeakingMarkStatus(input)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="320" y="278" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actions1_fn5" value="addSpeakingTeacherMark(input)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="320" y="328" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actions1_fn6" value="copyPreviousAttemptReviewBands(input)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="320" y="378" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actions1_fn7" value="finalizeSpeakingMockSessionReview(sessionId)&#10;— syncs bands back onto SpeakingAttempt" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="320" y="428" width="260" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== API ROUTE ===================== -->
+        <mxCell id="api1" value="app/api/speaking-grading/[sessionId]/analyze/route.ts (heavy job)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontSize=13;fontStyle=1;fillColor=#FFE6CC;strokeColor=#D79B00;strokeWidth=2;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="300" y="560" width="300" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="api1_fn1" value="POST(req, { params })&#10;loops attempts → ensureAttemptReviewData()" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#D79B00;" vertex="1" parent="1">
+          <mxGeometry x="320" y="600" width="260" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="api1_fn2" value="checkRateLimit(key)  — fail-open" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#D79B00;" vertex="1" parent="1">
+          <mxGeometry x="320" y="654" width="260" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== PIPELINE ===================== -->
+        <mxCell id="pipeline1" value="lib/speaking-review/pipeline.ts (orchestration)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontSize=13;fontStyle=1;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=2;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="660" y="40" width="260" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="pipeline1_fn1" value="ensureAttemptTranscriptSegments(attemptId)&#10;idempotent — no-ops if segments exist" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#9673A6;" vertex="1" parent="1">
+          <mxGeometry x="678" y="82" width="224" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="pipeline1_fn2" value="ensureAttemptReviewData(attemptId, reviewerId, provider?)&#10;one-shot — won't overwrite teacher edits" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#9673A6;" vertex="1" parent="1">
+          <mxGeometry x="678" y="144" width="224" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== PROVIDER (PLUG POINT) ===================== -->
+        <mxCell id="provider1" value="lib/speaking-review/provider.ts&#10;🔌 AI PLUG POINT" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontSize=13;fontStyle=1;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=3;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="660" y="250" width="260" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="provider1_fn1" value="interface SpeakingReviewGradingProvider&#10;.analyzeAttempt(input) → { bands, marks }&#10;← implement this with your real AI" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#FFFFFF;strokeColor=#B85450;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="678" y="292" width="224" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="provider1_fn2" value="DefaultSpeakingReviewGradingProvider&#10;.analyzeAttempt() — works today, zero new AI calls" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#B85450;" vertex="1" parent="1">
+          <mxGeometry x="678" y="360" width="224" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="provider1_fn3" value="bandsFromFeedback() · marksFromFeedback()&#10;locateInSegments()  (private helpers)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#B85450;" vertex="1" parent="1">
+          <mxGeometry x="678" y="416" width="224" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== REUSED FROM EXISTING APP ===================== -->
+        <mxCell id="reused1" value="Reused from existing app (unchanged)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontSize=13;fontStyle=1;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=2;dashed=1;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="660" y="520" width="260" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="reused1_fn1" value="loadListeningAudio(audioUrl)&#10;(src/app/actions/admin.ts)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="678" y="560" width="224" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="reused1_fn2" value="transcribeAudioWithProvider(bytes, url, opts)&#10;OpenAI → HF Whisper fallback chain" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="678" y="604" width="224" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="reused1_fn3" value="gradeSpeakingAnswer(input)&#10;→ writes SpeakingAttempt.feedbackJson at submission time" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="678" y="648" width="224" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== DATABASE ===================== -->
+        <mxCell id="db1" value="PostgreSQL (Prisma)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontSize=13;fontStyle=1;fillColor=#F5F5F5;strokeColor=#666666;strokeWidth=2;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="40" width="220" height="650" as="geometry" />
+        </mxCell>
+        <mxCell id="db1_fn1" value="SpeakingAttempt  (existing)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="80" width="190" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="db1_fn2" value="SpeakingMockSession  (existing)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="126" width="190" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="db1_fn3" value="SpeakingAttemptTranscriptSegment  (new)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#E8F5E8;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="172" width="190" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="db1_fn4" value="SpeakingAttemptMark  (new)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#E8F5E8;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="218" width="190" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="db1_fn5" value="SpeakingAttemptReview  (new)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#E8F5E8;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="264" width="190" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="db1_fn6" value="SpeakingMockSessionReview  (new)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#E8F5E8;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="310" width="190" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="db1_note" value="Neon, pooled DATABASE_URL&#10;accessed via src/lib/prisma.ts singleton&#10;runtime role: ielts_app (least-privilege)" style="text;html=1;fontSize=10;fontStyle=2;align=center;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="356" width="190" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== LEGEND ===================== -->
+        <mxCell id="legend1" value="Legend" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontSize=13;fontStyle=1;fillColor=#FFFFFF;strokeColor=#333333;strokeWidth=2;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="40" width="260" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_1" value="Entry — Server Component" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1315" y="76" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_2" value="Shared Types (DTOs)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#999999;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1315" y="110" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_3" value="Server Actions — CRUD" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1315" y="144" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_4" value="API Route — heavy async job" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFE6CC;strokeColor=#D79B00;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1315" y="178" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_5" value="Pipeline — orchestration" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1315" y="212" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_6" value="🔌 Provider — AI plug point" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="1315" y="246" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_7" value="Reused, unchanged code" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=2;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1315" y="280" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_8" value="Database — Prisma models" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F5F5F5;strokeColor=#666666;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1315" y="314" width="230" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_9" value="Client UI — React (browser)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#E6E6FA;strokeColor=#6666CC;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1315" y="348" width="230" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== CLIENT UI ===================== -->
+        <mxCell id="client1" value="components/speaking-review/  —  SpeakingReviewPanel.tsx + useAudioWaveform.ts  (Client Component, runs in the browser)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontSize=13;fontStyle=1;fillColor=#E6E6FA;strokeColor=#6666CC;strokeWidth=2;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="740" width="1220" height="340" as="geometry" />
+        </mxCell>
+
+        <mxCell id="client1_fn1" value="fmt(seconds)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="60" y="786" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn2" value="chunkAverage(chunk) / chunkGraded(chunk)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="350" y="786" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn3" value="splitSegmentByMarks(text, marks)&#10;positions &lt;mark&gt; spans in transcript" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="640" y="786" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn4" value="useAudioWaveform(audioUrl)&#10;decodes real peaks via Web Audio API" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="930" y="786" width="270" height="46" as="geometry" />
+        </mxCell>
+
+        <mxCell id="client1_fn5" value="togglePlay() / seekTo(t, autoplay)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="60" y="842" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn6" value="Waveform({ peaks, marks, duration, pos })&#10;renders the SVG timeline + mark dots" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="350" y="842" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn7" value="dropMark(category)  — F/L/G/P keys&#10;adds a teacher mark at current time" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="640" y="842" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn8" value="keepMark() / dismissMark()  — Y/X keys" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="930" y="842" width="270" height="46" as="geometry" />
+        </mxCell>
+
+        <mxCell id="client1_fn9" value="setBand(key, raw) / bump(key, delta)&#10;editing the band steppers" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="60" y="898" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn10" value="updateAttempt() / updateMark()&#10;optimistic local state helpers" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="350" y="898" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn11" value="saveNote() / draftNote()" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="640" y="898" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn12" value="copyPrev()  — copy previous answer's bands" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="930" y="898" width="270" height="46" as="geometry" />
+        </mxCell>
+
+        <mxCell id="client1_fn13" value="finish()  — Return to student" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="60" y="954" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn14" value="onKey(e)  — keyboard shortcuts&#10;Tab · 1-3 · Space · ←/→ · F/L/G/P · Y/X · ⌘Enter" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="350" y="954" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn15" value="&lt;audio&gt; element&#10;real playback, drives pos/playing state" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="640" y="954" width="270" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="client1_fn16" value="SpeakingReviewPanel({ initial })&#10;top-level component, owns all state" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#FFFFFF;strokeColor=#6666CC;" vertex="1" parent="1">
+          <mxGeometry x="930" y="954" width="270" height="46" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== EDGES ===================== -->
+        <mxCell id="e1" value="getSpeakingMockSessionForReview(sessionId)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;strokeWidth=2;strokeColor=#6C8EBF;endArrow=block;" edge="1" parent="1" source="page1" target="actions1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e2" value="ensureAttemptReviewData(attemptId, reviewerId)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;strokeWidth=2;strokeColor=#82B366;endArrow=block;" edge="1" parent="1" source="actions1" target="pipeline1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e3" value="loadListeningAudio() · transcribeAudioWithProvider()" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;strokeWidth=2;strokeColor=#9673A6;endArrow=block;" edge="1" parent="1" source="pipeline1" target="reused1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e4" value="provider.analyzeAttempt(input)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;fontStyle=1;strokeWidth=3;strokeColor=#B85450;endArrow=block;" edge="1" parent="1" source="pipeline1" target="provider1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e5" value="reads feedbackJson" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;strokeWidth=2;strokeColor=#B85450;dashed=1;endArrow=block;" edge="1" parent="1" source="provider1" target="reused1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e6" value="Prisma read/write" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;strokeWidth=2;strokeColor=#82B366;endArrow=block;" edge="1" parent="1" source="actions1" target="db1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e7" value="Prisma write: segments, marks, review" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;strokeWidth=2;strokeColor=#9673A6;endArrow=block;" edge="1" parent="1" source="pipeline1" target="db1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e8" value="renders &lt;SpeakingReviewPanel initial={dto}/&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;fontStyle=1;strokeWidth=3;strokeColor=#6C8EBF;endArrow=block;" edge="1" parent="1" source="page1" target="client1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e9" value="band/note/mark edits · copyPrev · finalize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;strokeWidth=2;strokeColor=#6666CC;endArrow=block;" edge="1" parent="1" source="client1" target="actions1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e10" value="POST /analyze (optional fast-path on mount)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;strokeWidth=2;strokeColor=#D79B00;dashed=1;endArrow=block;" edge="1" parent="1" source="client1" target="api1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e11" value="ensureAttemptReviewData() per attempt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;strokeWidth=2;strokeColor=#D79B00;endArrow=block;" edge="1" parent="1" source="api1" target="pipeline1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e12" value="shared types" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;strokeWidth=1;strokeColor=#999999;dashed=1;endArrow=none;" edge="1" parent="1" source="types1" target="actions1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e13" value="shared types" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=9;strokeWidth=1;strokeColor=#999999;dashed=1;endArrow=none;" edge="1" parent="1" source="types1" target="client1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

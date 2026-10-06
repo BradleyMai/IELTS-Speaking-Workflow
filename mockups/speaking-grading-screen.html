@@ -1,0 +1,1123 @@
+<title>Speaking Grading Screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F5F6F8; --surface:#FFFFFF; --surface-2:#FAFBFC;
+  --border:#E4E7EC; --border-strong:#D0D5DD;
+  --ink:#101828; --ink-2:#475467; --ink-3:#98A2B3;
+  --accent:#EA580C; --accent-ink:#FFFFFF; --accent-soft:#FFF1E9; --accent-line:#F7C39C; --accent-deep:#9A3412;
+
+  --c-fluency:#15803D; --c-fluency-bg:#EFFAF1; --c-fluency-line:#BBE8C4;
+  --c-pron:#1D4ED8;    --c-pron-bg:#EEF3FF;    --c-pron-line:#C4D6FB;
+  --c-lexical:#B45309; --c-lexical-bg:#FFF8EB; --c-lexical-line:#F5DDA8;
+  --c-grammar:#B91C1C; --c-grammar-bg:#FDF0F0; --c-grammar-line:#F3C6C6;
+
+  --badge-neutral-bg:#F2F4F7; --badge-neutral-ink:#344054; --badge-neutral-line:#E4E7EC;
+  --badge-priority-bg:#FEF3E0; --badge-priority-ink:#B45309; --badge-priority-line:#FBDFA6;
+  --badge-attempt-bg:#EEF3FF; --badge-attempt-ink:#1D4ED8; --badge-attempt-line:#C4D6FB;
+  --danger:#B91C1C; --danger-soft:#FDF0F0; --danger-line:#F3C6C6;
+  --ok:#15803D;
+
+  --select-bg:#FEF9E3; --select-line:#F2CE4B; --select-ink:#8A6206;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,-apple-system,sans-serif}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+button{font-family:inherit;cursor:pointer}
+textarea,input,select{font-family:inherit;background:var(--surface);color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+::selection{background:var(--accent-soft)}
+
+.app{max-width:1560px;margin:0 auto}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 20px;
+}
+.avatar{
+  width:38px;height:38px;border-radius:999px;flex:none;
+  background:linear-gradient(135deg,#FFD9BF,var(--accent-soft));border:1px solid var(--accent-line);
+  display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--accent);
+}
+.who{display:flex;flex-direction:column;line-height:1.3}
+.who .name{font-weight:700;font-size:14.5px;letter-spacing:-.01em}
+.who .meta{font-size:12px;color:var(--ink-3)}
+.spacer{flex:1}
+.badges{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{font-size:11px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;padding:4px 9px;border-radius:999px;border:1px solid;white-space:nowrap}
+.badge.neutral{background:var(--badge-neutral-bg);color:var(--badge-neutral-ink);border-color:var(--badge-neutral-line)}
+.badge.priority{background:var(--badge-priority-bg);color:var(--badge-priority-ink);border-color:var(--badge-priority-line)}
+.badge.attempt{background:var(--badge-attempt-bg);color:var(--badge-attempt-ink);border-color:var(--badge-attempt-line)}
+.tbtn{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:7px;background:var(--surface);border:1px solid var(--border-strong);color:var(--ink-2)}
+.tbtn:hover{background:var(--surface-2)}
+.tbtn.danger{color:var(--danger);border-color:var(--danger-line);background:var(--danger-soft)}
+
+/* ---------- test overall (above the part tabs) ---------- */
+.overallbar{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  margin:14px 20px 0;padding:11px 16px;
+  background:var(--surface);border:1px solid var(--border);border-radius:11px;
+}
+.ovparts{display:flex;align-items:center;gap:7px;flex-wrap:wrap;flex:1;min-width:0}
+.ovpart{
+  display:flex;align-items:center;gap:7px;flex:none;
+  border:1px solid var(--border);border-radius:8px;padding:5px 11px;background:var(--surface-2);
+}
+.ovpart.graded{background:var(--c-fluency-bg);border-color:var(--c-fluency-line)}
+.ovpart .nm{font-size:11.5px;font-weight:700;color:var(--ink-2)}
+.ovpart .bd{font-size:14px;font-weight:800;color:var(--c-fluency);font-variant-numeric:tabular-nums}
+.ovpart .bd.unset{font-size:10.5px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
+.ovtotal{display:flex;align-items:center;gap:11px;flex:none;padding-left:18px;border-left:1px solid var(--border)}
+.ovtotal .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.ovtotal .val{font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
+@media (max-width:720px){
+  .ovtotal{padding-left:0;border-left:none;width:100%;justify-content:space-between}
+}
+
+/* ---------- part switcher ---------- */
+.parts{display:flex;gap:10px;padding:12px 20px 0;flex-wrap:wrap}
+.parttab{
+  flex:1;min-width:210px;text-align:left;background:var(--surface);
+  border:1px solid var(--border);border-radius:10px;padding:10px 13px;
+  display:flex;flex-direction:column;gap:4px;transition:border-color .12s,box-shadow .12s;
+}
+.parttab:hover{border-color:var(--border-strong)}
+.parttab[aria-current="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.parttab .pt-top{display:flex;align-items:center;gap:8px}
+.parttab .pt-name{font-size:13px;font-weight:700;letter-spacing:-.01em}
+.parttab .pt-band{margin-left:auto;font-size:14px;font-weight:800}
+.parttab .pt-band.unset{color:var(--ink-3);font-weight:600;font-size:11.5px}
+.parttab .pt-meta{font-size:11px;color:var(--ink-3);font-weight:500}
+.dotstate{width:7px;height:7px;border-radius:999px;flex:none;background:var(--border-strong)}
+.dotstate.done{background:var(--ok)}
+
+/* ---------- layout ---------- */
+.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(250px,0.78fr) minmax(320px,1fr);gap:16px;padding:14px 20px 40px}
+@media (max-width:1080px){.layout{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+
+/* ---------- main column ---------- */
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.headcard{padding:18px 20px 0;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.headcard h1{font-size:19px;font-weight:700;letter-spacing:-.01em;margin-top:4px;line-height:1.35}
+.headscore{margin-left:auto;text-align:right}
+.headscore .num{font-size:30px;font-weight:800;letter-spacing:-.02em;color:var(--c-fluency)}
+.headscore .num.unset{color:var(--ink-3)}
+.headscore .lbl{font-size:11px;color:var(--ink-3);font-weight:600}
+.metarow{display:flex;gap:22px;flex-wrap:wrap;padding:14px 20px 16px;font-size:12.5px;border-bottom:1px solid var(--border)}
+.metarow div b{display:block;font-size:13.5px;color:var(--ink);font-weight:700}
+.metarow div span{color:var(--ink-3);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+
+.answerbar{display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--surface-2);flex-wrap:wrap}
+.answerbar .lbl{font-size:12px;font-weight:600;color:var(--ink-2)}
+.playall{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:7px;border:1px solid var(--border-strong);background:var(--surface);font-size:12.5px;font-weight:600;color:var(--ink)}
+.playall svg{width:11px;height:11px;fill:var(--ink)}
+.speedgroup{display:flex;border:1px solid var(--border-strong);border-radius:7px;overflow:hidden;flex:none}
+.speedgroup button{border:none;background:var(--surface);padding:5px 9px;font-size:11px;font-weight:600;color:var(--ink-2);border-right:1px solid var(--border-strong)}
+.speedgroup button:last-child{border-right:none}
+.speedgroup button.active{background:var(--accent-soft);color:var(--accent-deep);font-weight:700}
+
+/* ---------- question cards ---------- */
+.qlist{display:flex;flex-direction:column}
+.qcard{padding:16px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s,box-shadow .12s}
+.qcard:last-child{border-bottom:none}
+.qcard:hover{background:var(--surface-2)}
+.qcard.selected{background:var(--select-bg);box-shadow:inset 3px 0 0 var(--select-line)}
+.qcard.selected:hover{background:var(--select-bg)}
+.qcard.active{box-shadow:inset 3px 0 0 var(--accent)}
+.qcard.selected.active{box-shadow:inset 3px 0 0 var(--accent)}
+.qcard.selected .qnum{background:var(--select-line);color:var(--select-ink);border-color:var(--select-ink)}
+.selflag{
+  font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  background:var(--select-line);color:var(--select-ink);border-radius:5px;padding:2px 6px;flex:none;
+}
+.qhead{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.qnum{
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  background:var(--badge-neutral-bg);color:var(--badge-neutral-ink);
+  border:1px solid var(--border-strong);border-radius:5px;padding:2px 7px;flex:none;
+}
+.qtext{font-size:13.5px;font-weight:600;line-height:1.5;color:var(--ink);flex:1;min-width:200px}
+.qmeta{font-size:11px;color:var(--ink-3);font-weight:600;white-space:nowrap}
+.qplayer{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.playbtn{width:30px;height:30px;border-radius:999px;flex:none;border:1px solid var(--accent);background:var(--accent);display:grid;place-items:center}
+.playbtn:hover{background:#D9500D}
+.playbtn svg{width:11px;height:11px;fill:#fff}
+.wave{flex:1;height:32px;cursor:pointer;min-width:0}
+.time{font-size:11px;color:var(--ink-3);flex:none;min-width:74px;text-align:right}
+.transcript{font-size:14px;line-height:2;color:var(--ink);cursor:text}
+.transcript::selection,.transcript *::selection{background:var(--accent-soft)}
+.transcript mark{background:none;color:inherit;padding:0 1px;border-bottom:2px dotted var(--c-grammar);cursor:pointer}
+.transcript mark.lexical{border-bottom-color:var(--c-lexical)}
+.transcript mark.fluency{border-bottom-color:var(--c-fluency)}
+.transcript mark.pron{border-bottom-color:var(--c-pron)}
+.transcript mark.teacher{border-bottom-style:solid}
+.transcript mark.focus{background:var(--accent-soft);border-radius:3px;box-shadow:0 0 0 2px var(--accent-line)}
+.transcript sup{
+  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:9.5px;
+  background:var(--c-grammar-bg);color:var(--c-grammar);border:1px solid var(--c-grammar-line);
+  border-radius:999px;padding:1px 4px;margin-left:2px;cursor:pointer;
+}
+.transcript sup.lexical{background:var(--c-lexical-bg);color:var(--c-lexical);border-color:var(--c-lexical-line)}
+.transcript sup.fluency{background:var(--c-fluency-bg);color:var(--c-fluency);border-color:var(--c-fluency-line)}
+.transcript sup.pron{background:var(--c-pron-bg);color:var(--c-pron);border-color:var(--c-pron-line)}
+
+/* ---------- mark-an-error popover ---------- */
+#markpop{
+  position:absolute;z-index:40;background:var(--surface);border:1px solid var(--border-strong);
+  border-radius:10px;box-shadow:0 8px 24px rgba(16,24,40,.16);padding:9px 10px;width:max-content;max-width:min(320px,92vw);
+}
+#markpop[hidden]{display:none}
+#markpop .pophead{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+#markpop .popq{
+  font-size:11px;font-style:italic;color:var(--ink-2);max-width:200px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+#markpop .popx{margin-left:auto;border:none;background:none;color:var(--ink-3);font-size:14px;line-height:1;padding:0 2px;cursor:pointer}
+#markpop .poplab{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+#markpop .popgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+#markpop .popgrid button{
+  text-align:left;border:1px solid var(--border);border-radius:7px;padding:6px 9px;background:var(--surface-2);
+  font-size:11.5px;font-weight:700;line-height:1.25;cursor:pointer;
+}
+#markpop .popgrid button:hover{background:var(--surface)}
+#markpop .popgrid button.fluency{border-left:3px solid var(--c-fluency);color:var(--c-fluency)}
+#markpop .popgrid button.pron{border-left:3px solid var(--c-pron);color:var(--c-pron)}
+#markpop .popgrid button.lexical{border-left:3px solid var(--c-lexical);color:var(--c-lexical)}
+#markpop .popgrid button.grammar{border-left:3px solid var(--c-grammar);color:var(--c-grammar)}
+
+/* ---------- grading column ---------- */
+.gradepanel{padding:18px;display:flex;flex-direction:column;gap:16px}
+.gradehead{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.gradehead .meta{font-size:11px;color:var(--ink-3);font-weight:600}
+.gradehead .meta b{color:var(--ink-2)}
+.scopenote{
+  font-size:11.5px;line-height:1.5;color:var(--ink-2);background:var(--surface-2);
+  border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:7px;padding:8px 11px;
+}
+.scorerow{display:flex;gap:10px;align-items:flex-end}
+.scorerow label{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:5px}
+.scoreinput{
+  width:84px;font-size:20px;font-weight:800;padding:7px 10px;border-radius:8px;
+  border:1.5px solid var(--c-fluency-line);background:var(--c-fluency-bg);color:var(--c-fluency);
+}
+.scoreinput:focus{background:var(--surface)}
+.ghostbtn{padding:9px 14px;border-radius:8px;font-size:12.5px;font-weight:600;border:1px solid var(--border-strong);background:var(--surface-2);color:var(--ink-2)}
+.ghostbtn:hover{background:var(--surface)}
+
+.tabs{display:flex;border-bottom:1px solid var(--border);gap:2px;flex-wrap:wrap}
+.tabs button{padding:8px 4px;margin-right:16px;font-size:12.5px;font-weight:600;color:var(--ink-3);border:none;background:none;border-bottom:2px solid transparent}
+.tabs button.active{color:var(--ink);border-bottom-color:var(--accent)}
+.tabpanel{padding-top:10px}
+.tabpanel[hidden]{display:none}
+.tabpanel textarea{width:100%;min-height:86px;resize:vertical;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.55;color:var(--ink-2);background:var(--surface-2)}
+.impblock{margin-bottom:10px}
+.impblock:last-child{margin-bottom:0}
+.impblock .impq{font-size:11px;font-weight:700;color:var(--ink-3);display:flex;gap:6px;align-items:center;margin-bottom:4px}
+.impblock .impq .qnum{background:var(--surface-2);color:var(--ink-3)}
+.impblock textarea{min-height:64px;font-size:12.5px}
+
+.actionrow{display:flex;gap:10px}
+.btn-primary{flex:1;padding:10px 14px;border-radius:8px;border:none;background:var(--accent);color:var(--accent-ink);font-size:13px;font-weight:700}
+.btn-primary:hover{background:#D9500D}
+.btn-secondary{padding:10px 14px;border-radius:8px;border:1px solid var(--border-strong);background:var(--surface);color:var(--ink-2);font-size:13px;font-weight:600}
+
+.critheader h2{font-size:13px;font-weight:700;letter-spacing:-.01em}
+.critheader p{font-size:11.5px;color:var(--ink-3);margin-top:2px;line-height:1.45}
+.critcard{border:1px solid var(--border);border-left-width:3px;border-radius:9px;padding:12px 14px;background:var(--surface);display:flex;flex-direction:column;gap:8px}
+.critcard.fluency{border-left-color:var(--c-fluency)}
+.critcard.pron{border-left-color:var(--c-pron)}
+.critcard.lexical{border-left-color:var(--c-lexical)}
+.critcard.grammar{border-left-color:var(--c-grammar)}
+.critrow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.critname{font-size:12.5px;font-weight:700}
+.critcard.fluency .critname{color:var(--c-fluency)}
+.critcard.pron .critname{color:var(--c-pron)}
+.critcard.lexical .critname{color:var(--c-lexical)}
+.critcard.grammar .critname{color:var(--c-grammar)}
+.critsub{font-size:10.5px;color:var(--ink-3);margin-top:2px}
+.critscore{display:flex;align-items:center;gap:6px;flex:none}
+.critscore input{width:46px;text-align:center;font-size:14.5px;font-weight:700;padding:5px 4px;border-radius:6px;border:1px solid var(--border-strong);background:var(--surface);color:var(--ink)}
+.editlbl{font-size:9.5px;font-weight:700;letter-spacing:.05em;color:var(--ink-3);text-transform:uppercase}
+.critcard textarea{width:100%;min-height:44px;resize:vertical;border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:12px;line-height:1.5;color:var(--ink-2);background:var(--surface-2)}
+
+
+/* ---------- evidence rail ---------- */
+.railpanel{padding:16px}
+.railhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.railhead h2{font-size:13px;font-weight:700}
+.railclose{border:none;background:none;color:var(--ink-3);font-size:15px;line-height:1;padding:2px}
+.railhint{font-size:11.5px;color:var(--ink-3);line-height:1.5;margin-bottom:12px}
+.railfilter{
+  display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:7px 9px;
+  background:var(--select-bg);border:1px solid var(--select-line);border-radius:7px;
+}
+.railfilter span{font-size:11px;font-weight:700;color:var(--select-ink);line-height:1.3}
+.railfilter button{
+  margin-left:auto;flex:none;border:1px solid var(--select-line);background:var(--surface);
+  color:var(--select-ink);font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:5px;
+}
+.railfilter button:hover{background:var(--select-bg)}
+.railgroup{margin-bottom:14px}
+.railgroup:last-child{margin-bottom:0}
+.railgrouphead{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.railgrouphead .qnum{font-size:10px}
+.railgrouphead .rgq{font-size:11px;color:var(--ink-3);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.evlist{display:flex;flex-direction:column;gap:8px}
+.evcard{border:1px solid var(--border);border-radius:9px;padding:10px 11px;cursor:pointer;background:var(--surface);transition:border-color .12s,background .12s}
+.evcard:hover{background:var(--surface-2)}
+.evcard.focus{background:var(--accent-soft);border-color:var(--accent-line)}
+.evtop{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.evtag{font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 6px;border-radius:5px}
+.evtag.grammar{background:var(--c-grammar-bg);color:var(--c-grammar)}
+.evtag.lexical{background:var(--c-lexical-bg);color:var(--c-lexical)}
+.evtag.fluency{background:var(--c-fluency-bg);color:var(--c-fluency)}
+.evtag.pron{background:var(--c-pron-bg);color:var(--c-pron)}
+.evsrc{
+  font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:2px 5px;border-radius:4px;border:1px solid var(--border-strong);color:var(--ink-3);background:var(--surface-2);
+}
+.evsrc.teacher{background:var(--accent-soft);color:var(--accent-deep);border-color:var(--accent-line)}
+.evtime{font-size:10px;color:var(--ink-3);margin-left:auto;font-variant-numeric:tabular-nums}
+.evquote{font-size:12px;color:var(--ink);font-style:italic;line-height:1.45}
+.evfix{font-size:11.5px;color:var(--ink-2);margin-top:4px;line-height:1.4}
+.evfix b{color:var(--ink-3);font-weight:700;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:2px}
+.evfix input,.evnote textarea{
+  width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 7px;
+  font-size:11.5px;line-height:1.4;color:var(--ink-2);background:var(--surface-2);font-family:inherit;
+}
+.evnote{margin-top:6px}
+.evnote b{color:var(--ink-3);font-weight:700;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:2px}
+.evnote textarea{min-height:40px;resize:vertical}
+.evnote textarea.filled{background:var(--surface);border-color:var(--border-strong);color:var(--ink)}
+.evfoot{display:flex;align-items:center;gap:8px;margin-top:6px}
+.evfoot .dropbtn{
+  margin-left:auto;border:1px solid var(--danger-line);background:var(--danger-soft);color:var(--danger);
+  font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;cursor:pointer;
+}
+.evfoot .dropbtn:hover{background:#F8D7D4}
+.railempty{font-size:12px;color:var(--ink-3);line-height:1.5}
+.railtip{
+  font-size:11px;color:var(--ink-2);line-height:1.5;background:var(--surface-2);
+  border:1px dashed var(--border-strong);border-radius:7px;padding:8px 10px;margin-top:12px;
+}
+.railtip b{color:var(--ink);font-weight:700}
+.critcount{
+  font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+  padding:2px 6px;border-radius:5px;background:var(--surface-2);border:1px solid var(--border-strong);color:var(--ink-3);
+}
+.critcount.has{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent-deep)}
+
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);
+  background:var(--ink);color:#fff;padding:9px 16px;border-radius:8px;font-size:12.5px;font-weight:600;
+  opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:50;
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+
+  <div class="topbar">
+    <div class="avatar">PT</div>
+    <div class="who">
+      <span class="name">Phạm Anh Thư</span>
+      <span class="meta">anhthupham.demo@gmail.com · IEC K29 · Foundation</span>
+    </div>
+    <div class="spacer"></div>
+    <div class="badges">
+      <span class="badge neutral">Needs grading</span>
+      <span class="badge priority">Medium</span>
+      <span class="badge attempt">Attempt 1</span>
+      <span class="badge neutral">Reviewer: Ms. Hạnh</span>
+    </div>
+    <button class="tbtn">Flag</button>
+    <button class="tbtn">Skip</button>
+    <button class="tbtn danger">Close</button>
+  </div>
+
+  <div class="overallbar">
+    <span class="eyebrow">Test overall</span>
+    <div class="ovparts" id="rollRows"></div>
+    <div class="ovtotal">
+      <span class="lbl">Overall band</span>
+      <span class="val" id="rollTotal">—</span>
+    </div>
+  </div>
+
+  <div class="parts" id="parts"></div>
+
+  <div class="layout">
+    <div class="col">
+      <div class="panel">
+        <div class="headcard">
+          <div>
+            <span class="eyebrow" id="partEyebrow"></span>
+            <h1 id="partTitle"></h1>
+          </div>
+          <div class="headscore">
+            <div class="num" id="headScore">—</div>
+            <div class="lbl">Band · this part</div>
+          </div>
+        </div>
+        <div class="metarow" id="metarow"></div>
+        <div class="answerbar">
+          <button class="playall" id="playAll"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Play all answers</button>
+          <span class="lbl" id="answerCount"></span>
+          <div class="spacer"></div>
+          <div class="speedgroup" id="speeds">
+            <button class="active" data-rate="1">1×</button>
+            <button data-rate="1.25">1.25×</button>
+            <button data-rate="1.5">1.5×</button>
+          </div>
+        </div>
+        <div class="qlist" id="qlist"></div>
+      </div>
+    </div>
+
+    <div class="panel railpanel">
+      <div class="railhead">
+        <h2>Marked error details</h2>
+        <button class="railclose" aria-label="Close">✕</button>
+      </div>
+      <p class="railhint" id="railHint"></p>
+      <div id="railFilter"></div>
+      <div id="rail"></div>
+    </div>
+
+    <div class="panel gradepanel">
+      <div class="gradehead">
+        <span class="eyebrow">Grading</span>
+        <span class="meta">AI band <b id="aiBandLbl">—</b> · Saved <b id="savedLbl">draft</b></span>
+      </div>
+
+      <div class="scopenote" id="scopeNote"></div>
+
+      <div class="scorerow">
+        <div>
+          <label for="finalScore">Band for this part</label>
+          <input class="scoreinput mono" id="finalScore" inputmode="decimal">
+        </div>
+        <div class="spacer"></div>
+        <button class="ghostbtn" id="regradeBtn">↻ Regrade with AI</button>
+      </div>
+
+      <div>
+        <div class="tabs">
+          <button class="active" data-tab="overview">Overview</button>
+          <button data-tab="improved">Improved answers (AI)</button>
+        </div>
+        <div class="tabpanel" data-panel="overview">
+          <textarea id="overviewText"></textarea>
+        </div>
+        <div class="tabpanel" data-panel="improved" hidden>
+          <div id="improvedList"></div>
+        </div>
+      </div>
+
+      <div class="actionrow">
+        <button class="btn-primary" id="sendBtn">Send to student</button>
+        <button class="btn-secondary">Save draft</button>
+      </div>
+
+      <div class="critheader">
+        <h2>Teacher criterion analysis</h2>
+        <p id="critSub"></p>
+      </div>
+      <div id="critList" style="display:flex;flex-direction:column;gap:12px"></div>
+
+    </div>
+
+  </div>
+</div>
+
+<div id="markpop" hidden role="dialog" aria-label="Mark this as an error">
+  <div class="pophead">
+    <span class="popq" id="popQuote"></span>
+    <button class="popx" id="popClose" aria-label="Cancel">✕</button>
+  </div>
+  <div class="poplab">Mark against</div>
+  <div class="popgrid" id="popGrid"></div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================ demo content ============================ */
+var PARTS = [
+  {
+    id:'p1', name:'Part 1', topic:'Hometown & work', kind:'4 questions',
+    ai:{fluency:6.0,pron:5.5,lexical:6.0,grammar:5.5},
+    bands:{fluency:6.0,pron:6.0,lexical:6.0,grammar:5.5},
+    overview:'Answers are relevant and come quickly, but most are two sentences long — she should extend each one with a reason or example. Four of the five flagged errors are the same habit: singular nouns after numbers and quantifiers.',
+    questions:[
+      { n:1, dur:34, q:'Where is your hometown?',
+        text:[ 'My hometown is Hải Phòng, it is a port city in the north of Vietnam, about ',
+               {e:'e1',t:'two hour'}, ' from Hanoi by car. It is quite big but ',
+               {e:'e2',t:'not so crowded like'}, ' Hanoi.' ],
+        improved:'My hometown is Hải Phòng, a port city in the north of Vietnam, about two hours from Hanoi by car. It is quite big, but not as crowded as Hanoi.',
+        errors:[
+          {id:'e1',cat:'Grammar',t:11,quote:'two hour',fix:'two hours'},
+          {id:'e2',cat:'Grammar',t:22,quote:'not so crowded like',fix:'not as crowded as'}
+        ]},
+      { n:2, dur:41, q:'What do you like most about it?',
+        text:[ 'What I like most is the food, especially the seafood. There are ',
+               {e:'e3',t:'many small restaurant'}, ' near the sea and the price is very reasonable. Also the people there are very friendly, they always help you if you are lost.' ],
+        improved:'What I like most is the food, especially the seafood. There are many small restaurants near the sea and the prices are very reasonable. The people are friendly too — they will always help you if you get lost.',
+        errors:[{id:'e3',cat:'Grammar',t:14,quote:'many small restaurant',fix:'many small restaurants'}]},
+      { n:3, dur:29, q:'Do you work, or are you a student?',
+        text:[ 'I am working now, I am a marketing assistant for ',
+               {e:'e4',t:'a company make cosmetics'}, '. I have been doing this job for about one year and a half.' ],
+        improved:'I am working at the moment — I am a marketing assistant for a company that makes cosmetics. I have been doing this job for about a year and a half.',
+        errors:[{id:'e4',cat:'Grammar',t:12,quote:'a company make cosmetics',fix:'a company that makes cosmetics'}]},
+      { n:4, dur:38, q:'Would you like to live there in the future?',
+        text:[ 'Maybe in the future, yes. Right now I want to stay in Hanoi because ',
+               {e:'e5',t:'there have more opportunity'}, ' for young people, but when I am older I think I will come back to be near my parents.' ],
+        improved:'Maybe in the future, yes. Right now I want to stay in Hanoi because there are more opportunities for young people, but when I am older I think I will come back to be closer to my parents.',
+        errors:[{id:'e5',cat:'Grammar',t:13,quote:'there have more opportunity',fix:'there are more opportunities'}]}
+    ]
+  },
+  {
+    id:'p2', name:'Part 2', topic:'A skill you want to learn', kind:'Long turn',
+    ai:{fluency:6.5,pron:6.0,lexical:6.5,grammar:6.0},
+    bands:{fluency:7.0,pron:6.0,lexical:6.5,grammar:6.5},
+    overview:'Good range of ideas and the answer fills the full two minutes without drying up. Fluency dips slightly when reaching for less familiar vocabulary — the three flagged points are all worth a quick correction drill.',
+    questions:[
+      { n:1, dur:112, q:'Describe a skill you would like to learn. You should say: what the skill is, how you would learn it, how long it would take, and explain why you want to learn this skill.',
+        text:[ 'I would like to talk about playing the guitar, because it is a skill I have wanted for a long time but I never had enough time to learn it properly. I think I would learn it by watching video on YouTube first, and maybe later I ',
+               {e:'e1',t:'will join'}, ' a small class near my house, because practicing with a teacher is more effective than practicing alone. I think it would take about one year to play some simple song, but to play really well, it will take much longer, maybe ',
+               {e:'e2',t:'three or four year'}, '. The reason I want to learn it is because ',
+               {e:'e3',t:'music make me relax'}, ' after a stressful day at work, and I also think it would be a good skill to have at parties with my friends.' ],
+        improved:"I'd like to talk about playing the guitar. It's a skill I've wanted to pick up for a long time, but I've never had enough time to learn it properly. I think I'd start by watching videos on YouTube, and later join a small class near my house, since practising with a teacher is more effective than practising alone. It would probably take about a year to play some simple songs, but to play really well would take much longer — maybe three or four years. The reason I want to learn it is that music helps me relax after a stressful day at work, and I think it would be a good skill to have at parties with friends.",
+        errors:[
+          {id:'e1',cat:'Lexical',t:34,quote:'will join',fix:'would join / joining'},
+          {id:'e2',cat:'Grammar',t:71,quote:'three or four year',fix:'three or four years'},
+          {id:'e3',cat:'Grammar',t:88,quote:'music make me relax',fix:'music helps me relax'}
+        ]}
+    ]
+  },
+  {
+    id:'p3', name:'Part 3', topic:'Learning & technology', kind:'3 questions',
+    ai:{fluency:6.0,pron:6.0,lexical:6.5,grammar:6.0},
+    bands:{fluency:null,pron:null,lexical:null,grammar:null},
+    overview:'',
+    questions:[
+      { n:1, dur:52, q:'Do you think people learn new skills differently now compared to the past?',
+        text:[ 'Definitely, it is very different now. In the past ', {e:'e1',t:'you must go'},
+               ' to a class or find a teacher, but now you can learn almost everything on the internet. My father learned to repair his motorbike just from watching videos. But I think the problem is people give up ',
+               {e:'e2',t:'more easy'}, ' now, because nobody is checking on them.' ],
+        improved:'Definitely, it is very different now. In the past you had to go to a class or find a teacher, but now you can learn almost anything on the internet. My father learned to repair his motorbike just from watching videos. The problem, though, is that people give up more easily now, because nobody is checking on them.',
+        errors:[
+          {id:'e1',cat:'Grammar',t:9,quote:'you must go',fix:'you had to go'},
+          {id:'e2',cat:'Lexical',t:38,quote:'more easy',fix:'more easily'}
+        ]},
+      { n:2, dur:47, q:"What kinds of skills should schools teach that they don't teach now?",
+        text:[ 'I think schools should teach more ', {e:'e3',t:'practical thing'},
+               ' like managing money, or how to speak in front of people. When I left school I did not know anything about tax or saving, and I had to learn it myself which was quite stressful.' ],
+        improved:'I think schools should teach more practical things, like managing money or speaking in front of an audience. When I left school I did not know anything about tax or saving, so I had to learn it on my own, which was quite stressful.',
+        errors:[{id:'e3',cat:'Grammar',t:11,quote:'practical thing',fix:'practical things'}]},
+      { n:3, dur:44, q:'Is it ever too late for someone to learn a new skill?',
+        text:[ 'No, I do not think so. My mother started to learn English when she was fifty, and now she can talk with foreign customers ',
+               {e:'e4',t:'quite confident'}, '. Maybe it takes more time when you are older, but it is never impossible.' ],
+        improved:'No, I do not think so. My mother started learning English when she was fifty, and now she can talk to foreign customers quite confidently. It may take more time when you are older, but it is never impossible.',
+        errors:[{id:'e4',cat:'Lexical',t:26,quote:'quite confident',fix:'quite confidently'}]}
+    ]
+  }
+];
+
+var CRIT = [
+  {key:'fluency', cls:'fluency', name:'Fluency & Coherence'},
+  {key:'pron',    cls:'pron',    name:'Pronunciation'},
+  {key:'lexical', cls:'lexical', name:'Lexical Resource'},
+  {key:'grammar', cls:'grammar', name:'Grammatical Range & Accuracy'}
+];
+
+/* ============================ normalise transcripts ============================
+   The transcript literals above are written as segments so the AI's flagged spans are easy
+   to read. The screen needs character offsets instead, so a teacher can highlight any run
+   of text. Flatten each transcript to a plain string once, and record where each span sits. */
+var CATKEY = { Grammar:'grammar', Lexical:'lexical', Fluency:'fluency', Pronunciation:'pron' };
+var seq = 0;
+
+PARTS.forEach(function(p){
+  p.questions.forEach(function(q){
+    var plain = '', at = {};
+    q.text.forEach(function(seg){
+      if (typeof seg === 'string'){ plain += seg; return; }
+      at[seg.e] = { start:plain.length, end:plain.length + seg.t.length };
+      plain += seg.t;
+    });
+    q.plain = plain;
+    q.errors.forEach(function(er){
+      var r = at[er.id] || { start:0, end:0 };
+      er.start = r.start;
+      er.end = r.end;
+      er.cat = CATKEY[er.cat] || er.cat;
+      er.source = 'ai';
+      er.comment = er.comment || '';
+      er.id = 'e' + (++seq);
+    });
+  });
+});
+
+/* ============================ state ============================ */
+var state = { part:0, focus:null, selectedQ:null, playingKey:null, pos:{}, timer:null, chain:false, pending:null };
+
+function part(){ return PARTS[state.part]; }
+function qkey(pi,qi){ return PARTS[pi].id + '-q' + qi; }
+function fmt(s){ s = Math.max(0, Math.round(s||0)); return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); }
+function wordsOf(q){ return q.plain.trim().split(/\s+/).filter(Boolean).length; }
+function round5(v){ return Math.round(v*2)/2; }
+function bandOf(p){
+  var vals = CRIT.map(function(c){ return p.bands[c.key]; }).filter(function(v){ return v !== null && v !== undefined; });
+  if (vals.length < CRIT.length) return null;
+  return round5(vals.reduce(function(a,b){ return a+b; },0)/vals.length);
+}
+function aiBandOf(p){
+  var vals = CRIT.map(function(c){ return p.ai[c.key]; });
+  return round5(vals.reduce(function(a,b){ return a+b; },0)/vals.length);
+}
+
+/* ============================ rendering ============================ */
+function renderParts(){
+  document.getElementById('parts').innerHTML = PARTS.map(function(p,i){
+    var b = bandOf(p), total = p.questions.reduce(function(n,q){ return n+q.dur; },0);
+    return '<button class="parttab" aria-current="'+(i===state.part)+'" data-part="'+i+'">'
+      + '<span class="pt-top"><span class="dotstate '+(b!==null?'done':'')+'"></span>'
+      + '<span class="pt-name">'+p.name+' · '+p.topic+'</span>'
+      + '<span class="pt-band '+(b===null?'unset':'')+'">'+(b===null?'Not graded':b.toFixed(1))+'</span></span>'
+      + '<span class="pt-meta">'+p.kind+' · '+fmt(total)+' of audio · '+countErrors(p)+' flagged</span>'
+      + '</button>';
+  }).join('');
+  document.querySelectorAll('.parttab').forEach(function(b){
+    b.addEventListener('click', function(){
+      stopAudio(); state.part = +b.dataset.part; state.focus = null; state.selectedQ = null; renderAll();
+    });
+  });
+}
+function countErrors(p){
+  return p.questions.reduce(function(n,q){ return n + q.errors.length; },0);
+}
+function markedAgainst(p, cls){
+  return p.questions.reduce(function(n,q){
+    return n + q.errors.filter(function(er){ return er.cat === cls; }).length;
+  },0);
+}
+
+function renderHead(){
+  var p = part(), total = p.questions.reduce(function(n,q){ return n+q.dur; },0);
+  var words = p.questions.reduce(function(n,q){ return n+wordsOf(q); },0);
+  var b = bandOf(p);
+  document.getElementById('partEyebrow').textContent = 'Speaking attempt · ' + p.name;
+  document.getElementById('partTitle').textContent = '[IEC] Foundation Speaking — Test 3, ' + p.name + ' (' + p.topic + ')';
+  var hs = document.getElementById('headScore');
+  hs.textContent = b === null ? '—' : b.toFixed(1);
+  hs.className = 'num' + (b === null ? ' unset' : '');
+  document.getElementById('metarow').innerHTML =
+      meta('Answers', p.questions.length)
+    + meta('Total audio', fmt(total))
+    + meta('Words', words)
+    + meta('Pace', Math.round(words/total*60) + ' wpm')
+    + meta('Submitted', '14:22 · 21/09/2026');
+  document.getElementById('answerCount').textContent =
+    p.questions.length === 1 ? 'One long turn' : p.questions.length + ' answers in this part';
+}
+function meta(label, value){
+  return '<div><span>'+label+'</span><b>'+value+'</b></div>';
+}
+
+function renderQuestions(){
+  var p = part();
+  document.getElementById('qlist').innerHTML = p.questions.map(function(q,qi){
+    var key = qkey(state.part, qi), pos = state.pos[key] || 0;
+    var sel = state.selectedQ === qi;
+    return '<div class="qcard'+(sel?' selected':'')+(state.playingKey===key?' active':'')+'"'
+      + ' data-q="'+qi+'" id="qcard-'+qi+'" role="button" tabindex="0"'
+      + ' aria-pressed="'+sel+'"'
+      + ' title="'+(sel?'Click again to show every answer\'s errors':'Click to show only this answer\'s errors')+'">'
+      + '<div class="qhead">'
+        + (p.questions.length > 1 ? '<span class="qnum">Q'+q.n+'</span>' : '<span class="qnum">Long turn</span>')
+        + '<span class="qtext">'+q.q+'</span>'
+        + (sel ? '<span class="selflag">Showing</span>' : '')
+        + '<span class="qmeta">'+fmt(q.dur)+' · '+wordsOf(q)+' words · '+Math.round(wordsOf(q)/q.dur*60)+' wpm</span>'
+      + '</div>'
+      + '<div class="qplayer">'
+        + '<button class="playbtn" data-play="'+qi+'" aria-label="Play answer '+q.n+'">'
+          + '<svg viewBox="0 0 24 24">'+(state.playingKey===key?'<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>':'<path d="M8 5v14l11-7z"/>')+'</svg>'
+        + '</button>'
+        + '<svg class="wave" data-wave="'+qi+'" viewBox="0 0 600 32" preserveAspectRatio="none">'+waveSvg(qi,q,pos)+'</svg>'
+        + '<span class="time mono" data-time="'+qi+'">'+fmt(pos)+' / '+fmt(q.dur)+'</span>'
+      + '</div>'
+      + '<div class="transcript">'+transcriptHtml(q)+'</div>'
+    + '</div>';
+  }).join('');
+
+  document.querySelectorAll('.qcard').forEach(function(card){
+    card.addEventListener('click', function(ev){
+      if (ev.target.closest('.playbtn, .wave, mark, sup')) return;
+      var sel = window.getSelection();
+      if (sel && !sel.isCollapsed) return;        /* they were highlighting text, not picking a card */
+      selectQuestion(+card.dataset.q);
+    });
+    card.addEventListener('keydown', function(ev){
+      if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); selectQuestion(+card.dataset.q); }
+    });
+  });
+  document.querySelectorAll('[data-play]').forEach(function(b){
+    b.addEventListener('click', function(){ togglePlay(+b.dataset.play); });
+  });
+  document.querySelectorAll('[data-wave]').forEach(function(w){
+    w.addEventListener('click', function(e){
+      var qi = +w.dataset.wave, q = part().questions[qi], r = w.getBoundingClientRect();
+      seek(qi, (e.clientX - r.left) / r.width * q.dur);
+    });
+  });
+  document.querySelectorAll('.transcript mark, .transcript sup').forEach(function(el){
+    el.addEventListener('click', function(ev){ ev.stopPropagation(); focusError(el.dataset.q, el.dataset.e, true); });
+  });
+}
+
+function waveSvg(qi, q, pos){
+  var bars = 70, w = 600, h = 32, out = '', seed = (qi+1)*7.3;
+  for (var i=0;i<bars;i++){
+    var amp = Math.abs(Math.sin(i*0.41 + seed))*9 + Math.abs(Math.cos(i*0.17 + seed))*5 + 2;
+    out += '<rect x="'+((i/bars)*w+1).toFixed(1)+'" y="'+((h-amp)/2).toFixed(1)+'" width="'+(w/bars-1.3).toFixed(1)+'" height="'+amp.toFixed(1)+'" rx="1.1" fill="#CBD2DC"></rect>';
+  }
+  q.errors.forEach(function(er){
+    out += '<circle cx="'+((er.t/q.dur)*w).toFixed(1)+'" cy="3.5" r="3.2" fill="'+(er.cat==='Lexical'?'#FFF8EB':'#FDF0F0')+'" stroke="'+(er.cat==='Lexical'?'#B45309':'#B91C1C')+'" stroke-width="1.5"></circle>';
+  });
+  var x = (pos/q.dur)*w;
+  out += '<rect x="0" y="0" width="'+x.toFixed(1)+'" height="'+h+'" fill="#EA580C" opacity=".13"></rect>';
+  out += '<line x1="'+x.toFixed(1)+'" y1="0" x2="'+x.toFixed(1)+'" y2="'+h+'" stroke="#EA580C" stroke-width="1.8"></line>';
+  return out;
+}
+
+/* Build the transcript from plain text plus the marked ranges, so any run of characters
+   can carry a mark — the AI's own spans and anything a teacher highlights. */
+function transcriptHtml(q){
+  var qi = part().questions.indexOf(q);
+  var marks = sortedErrors(q);
+  var out = '', at = 0;
+  marks.forEach(function(er, i){
+    if (er.start < at) return;                       /* overlapping, already covered */
+    out += escapeHtml(q.plain.slice(at, er.start));
+    var focus = (state.focus && state.focus.q === qi && state.focus.e === er.id) ? ' focus' : '';
+    var teacher = er.source === 'teacher' ? ' teacher' : '';
+    out += '<mark class="' + er.cat + focus + teacher + '" data-q="' + qi + '" data-e="' + er.id + '">'
+         + escapeHtml(q.plain.slice(er.start, er.end))
+         + '<sup class="' + er.cat + '" data-q="' + qi + '" data-e="' + er.id + '">' + (i + 1) + '</sup></mark>';
+    at = er.end;
+  });
+  out += escapeHtml(q.plain.slice(at));
+  return out;
+}
+
+function sortedErrors(q){
+  return q.errors.slice().sort(function(a,b){ return a.start - b.start; });
+}
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderGrading(){
+  var p = part(), b = bandOf(p);
+  document.getElementById('aiBandLbl').textContent = aiBandOf(p).toFixed(1);
+  document.getElementById('finalScore').value = b === null ? '' : b.toFixed(1);
+  document.getElementById('finalScore').placeholder = '—';
+  document.getElementById('overviewText').value = p.overview;
+  document.getElementById('overviewText').placeholder = 'Overall comment the student will read for this part…';
+  document.getElementById('scopeNote').innerHTML = p.questions.length === 1
+    ? 'One set of bands covers this long turn. Mistakes are flagged per answer; the band is given for the part.'
+    : 'One set of bands covers <b>all ' + p.questions.length + ' answers</b> in ' + p.name + '. Mistakes are flagged per answer; the band is given for the part.';
+  document.getElementById('critSub').textContent =
+    'Scores apply to ' + p.name + ' as a whole. Comments appear in the same view the student sees.';
+
+  document.getElementById('critList').innerHTML = CRIT.map(function(c){
+    var v = p.bands[c.key], ai = p.ai[c.key];
+    var edited = v !== null && v !== ai;
+    var marked = markedAgainst(p, c.cls);
+    return '<div class="critcard '+c.cls+'">'
+      + '<div class="critrow"><div><div class="critname">'+c.name
+      + ' <span class="critcount'+(marked ? ' has' : '')+'">'+marked+' marked</span></div>'
+      + '<div class="critsub">'+(edited ? 'AI suggested '+ai.toFixed(1)+' · changed' : 'AI suggested '+ai.toFixed(1))+'</div></div>'
+      + '<div class="critscore"><input class="mono" data-crit="'+c.key+'" value="'+(v===null?'':v.toFixed(1))+'" placeholder="—" inputmode="decimal"><span class="editlbl">Teacher</span></div></div>'
+      + '<textarea placeholder="Comment for this criterion (optional)"></textarea></div>';
+  }).join('');
+  document.querySelectorAll('[data-crit]').forEach(function(inp){
+    inp.addEventListener('input', function(){
+      var val = parseFloat(inp.value);
+      part().bands[inp.dataset.crit] = isNaN(val) ? null : Math.max(1, Math.min(9, val));
+      renderParts(); renderHead(); renderRollup();
+      var b2 = bandOf(part());
+      document.getElementById('finalScore').value = b2 === null ? '' : b2.toFixed(1);
+    });
+  });
+
+  document.getElementById('improvedList').innerHTML = p.questions.map(function(q,qi){
+    return '<div class="impblock">'
+      + '<div class="impq">'+(p.questions.length>1?'<span class="qnum">Q'+q.n+'</span>':'<span class="qnum">Long turn</span>')
+      + '<span>'+escapeHtml(q.q.slice(0,58))+(q.q.length>58?'…':'')+'</span></div>'
+      + '<textarea>'+escapeHtml(q.improved)+'</textarea></div>';
+  }).join('');
+}
+
+function renderRollup(){
+  document.getElementById('rollRows').innerHTML = PARTS.map(function(p){
+    var b = bandOf(p);
+    return '<div class="ovpart'+(b!==null?' graded':'')+'">'
+      + '<span class="dotstate '+(b!==null?'done':'')+'"></span>'
+      + '<span class="nm">'+p.name+'</span>'
+      + '<span class="bd '+(b===null?'unset':'')+'">'+(b===null?'not graded':b.toFixed(1))+'</span></div>';
+  }).join('');
+  var done = PARTS.map(bandOf).filter(function(v){ return v !== null; });
+  document.getElementById('rollTotal').textContent = done.length === PARTS.length
+    ? round5(done.reduce(function(a,b){ return a+b; },0)/done.length).toFixed(1)
+    : '—';
+}
+
+function renderRail(){
+  var p = part(), total = countErrors(p), sel = state.selectedQ;
+  document.getElementById('railHint').innerHTML = total === 0
+    ? 'Nothing marked yet. Highlight any words in a transcript to mark your first error.'
+    : 'Highlight words in a transcript to add an error. Select a card to jump to that moment in the audio.';
+
+  var fb = document.getElementById('railFilter');
+  if (sel === null || p.questions.length === 1){
+    fb.innerHTML = '';
+  } else {
+    var sq = p.questions[sel], n = sq.errors.length;
+    fb.innerHTML = '<div class="railfilter"><span>Q'+sq.n+' only · '
+      + (n === 0 ? 'no errors flagged' : n + ' error' + (n>1?'s':'')) + '</span>'
+      + '<button type="button" id="showAllErrors">Show all ' + total + '</button></div>';
+    document.getElementById('showAllErrors').addEventListener('click', function(){
+      state.selectedQ = null; state.focus = null; renderQuestions(); renderRail();
+    });
+  }
+
+  document.getElementById('rail').innerHTML = p.questions.map(function(q,qi){
+    if (sel !== null && qi !== sel) return '';
+    if (!q.errors.length) return '';
+    return '<div class="railgroup">'
+      + '<div class="railgrouphead">'+(p.questions.length>1?'<span class="qnum">Q'+q.n+'</span>':'<span class="qnum">Long turn</span>')
+      + '<span class="rgq">'+escapeHtml(q.q.slice(0,34))+(q.q.length>34?'…':'')+'</span></div>'
+      + '<div class="evlist">' + sortedErrors(q).map(function(er){
+          var focus = (state.focus && state.focus.q === qi && state.focus.e === er.id) ? ' focus' : '';
+          return '<div class="evcard'+focus+'" data-q="'+qi+'" data-e="'+er.id+'">'
+            + '<div class="evtop"><span class="evtag '+er.cat+'">'+critShort(er.cat)+'</span>'
+            + '<span class="evsrc '+er.source+'">'+(er.source === 'ai' ? 'AI' : 'You')+'</span>'
+            + '<span class="evtime mono">'+fmt(er.t)+'</span></div>'
+            + '<div class="evquote">“'+escapeHtml(er.quote)+'”</div>'
+            + '<div class="evfix"><b>Say it as</b>'
+              + '<input data-fix="'+er.id+'" data-fq="'+qi+'" value="'+escapeHtml(er.fix)+'" '
+              + 'placeholder="The correct version"></div>'
+            + '<div class="evnote"><b>Your comment</b>'
+              + '<textarea data-note="'+er.id+'" data-nq="'+qi+'" class="'+(er.comment ? 'filled' : '')+'" '
+              + 'placeholder="What should the student do about this?">'+escapeHtml(er.comment)+'</textarea></div>'
+            + '<div class="evfoot"><button class="dropbtn" data-drop="'+er.id+'" data-dq="'+qi+'">Remove</button></div>'
+            + '</div>';
+        }).join('') + '</div></div>';
+  }).join('') || '<p class="railempty">' + (sel !== null && p.questions.length > 1
+      ? 'Nothing marked in Q' + p.questions[sel].n + ' yet. Highlight words in that answer to add one.'
+      : 'Nothing marked in this part yet.') + '</p>';
+
+  var tip = total === 0 ? '' :
+    '<p class="railtip"><b>To add an error:</b> highlight a word or sentence in any transcript, '
+    + 'then choose which of the four criteria it belongs to.</p>';
+  document.getElementById('rail').insertAdjacentHTML('beforeend', tip);
+
+  document.querySelectorAll('.evcard').forEach(function(card){
+    card.addEventListener('click', function(ev){
+      if (ev.target.closest('input, textarea, button')) return;
+      focusError(card.dataset.q, card.dataset.e, false);
+    });
+  });
+  document.querySelectorAll('[data-fix]').forEach(function(inp){
+    inp.addEventListener('input', function(){
+      findError(+inp.dataset.fq, inp.dataset.fix).fix = inp.value;
+    });
+  });
+  document.querySelectorAll('[data-note]').forEach(function(ta){
+    ta.addEventListener('input', function(){
+      findError(+ta.dataset.nq, ta.dataset.note).comment = ta.value;
+      ta.classList.toggle('filled', ta.value.trim() !== '');
+    });
+  });
+  document.querySelectorAll('[data-drop]').forEach(function(b){
+    b.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      dropError(+b.dataset.dq, b.dataset.drop);
+    });
+  });
+}
+
+function findError(qi, eid){
+  return part().questions[qi].errors.filter(function(er){ return er.id === eid; })[0] || {};
+}
+function critShort(cls){
+  return ({ fluency:'Fluency', pron:'Pronunciation', lexical:'Lexical', grammar:'Grammar' })[cls] || cls;
+}
+
+/* ============================ marking an error by hand ============================ */
+
+/* Character offset of a (node, offset) pair within a transcript element. */
+function offsetIn(root, node, nodeOffset){
+  var walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+  var total = 0, t;
+  while ((t = walk.nextNode())){
+    if (t === node) return total + nodeOffset;
+    total += t.nodeValue.length;
+  }
+  return -1;
+}
+
+function readSelection(){
+  var sel = window.getSelection();
+  if (!sel || sel.isCollapsed || sel.rangeCount === 0) return null;
+  var range = sel.getRangeAt(0);
+  var box = range.commonAncestorContainer;
+  if (box.nodeType === 3) box = box.parentNode;
+  var tr = box.closest ? box.closest('.transcript') : null;
+  if (!tr) return null;                                   /* selection is outside a transcript */
+
+  var card = tr.closest('.qcard');
+  var qi = +card.dataset.q;
+  var a = offsetIn(tr, range.startContainer, range.startOffset);
+  var b = offsetIn(tr, range.endContainer, range.endOffset);
+  if (a < 0 || b < 0 || a === b) return null;
+
+  var start = Math.min(a,b), end = Math.max(a,b);
+  var q = part().questions[qi];
+
+  /* trim whitespace the browser likes to include at the edges of a double-click */
+  while (start < end && /\s/.test(q.plain[start])) start++;
+  while (end > start && /\s/.test(q.plain[end - 1])) end--;
+  if (end <= start) return null;
+
+  return { qi:qi, start:start, end:end, text:q.plain.slice(start,end), rect:range.getBoundingClientRect() };
+}
+
+function overlapsExisting(q, start, end){
+  return q.errors.some(function(er){ return start < er.end && end > er.start; });
+}
+
+function openMarkPopover(){
+  var s = readSelection();
+  if (!s) return;
+  var q = part().questions[s.qi];
+
+  if (overlapsExisting(q, s.start, s.end)){
+    toast('That text is already marked — open its card to edit it');
+    window.getSelection().removeAllRanges();
+    return;
+  }
+
+  state.pending = s;
+  var pop = document.getElementById('markpop');
+  document.getElementById('popQuote').textContent = '“' + s.text + '”';
+  document.getElementById('popGrid').innerHTML = CRIT.map(function(c){
+    return '<button class="' + c.cls + '" data-cat="' + c.cls + '">' + c.name + '</button>';
+  }).join('');
+  document.querySelectorAll('#popGrid button').forEach(function(b){
+    b.addEventListener('click', function(){ markError(b.dataset.cat); });
+  });
+
+  pop.hidden = false;
+  var pr = pop.getBoundingClientRect();
+  var left = s.rect.left + window.scrollX + (s.rect.width / 2) - (pr.width / 2);
+  var top = s.rect.top + window.scrollY - pr.height - 10;
+  if (top < window.scrollY + 8) top = s.rect.bottom + window.scrollY + 10;   /* flip below */
+  left = Math.max(window.scrollX + 8, Math.min(left, window.scrollX + document.documentElement.clientWidth - pr.width - 8));
+  pop.style.left = left + 'px';
+  pop.style.top = top + 'px';
+}
+
+function closeMarkPopover(){
+  document.getElementById('markpop').hidden = true;
+  state.pending = null;
+}
+
+function markError(cat){
+  var s = state.pending;
+  if (!s) return;
+  var q = part().questions[s.qi];
+
+  var er = {
+    id:'t' + (++seq), cat:cat, source:'teacher',
+    start:s.start, end:s.end, quote:s.text, fix:'', comment:'',
+    t: Math.round(q.dur * (s.start / Math.max(1, q.plain.length)))
+  };
+  q.errors.push(er);
+
+  closeMarkPopover();
+  window.getSelection().removeAllRanges();
+
+  state.focus = { q:s.qi, e:er.id };
+  if (state.selectedQ !== null) state.selectedQ = s.qi;
+  renderQuestions();
+  renderGrading();
+  renderRail();
+
+  var card = document.querySelector('.evcard[data-q="' + s.qi + '"][data-e="' + er.id + '"]');
+  if (card){
+    card.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    var note = card.querySelector('textarea');
+    if (note) note.focus();
+  }
+  toast('Marked against ' + critName(cat) + ' — add your comment');
+}
+
+function critName(cls){
+  var c = CRIT.filter(function(x){ return x.cls === cls; })[0];
+  return c ? c.name : cls;
+}
+
+function dropError(qi, eid){
+  var q = part().questions[qi];
+  q.errors = q.errors.filter(function(er){ return er.id !== eid; });
+  if (state.focus && state.focus.e === eid) state.focus = null;
+  renderQuestions();
+  renderGrading();
+  renderRail();
+  toast('Removed');
+}
+
+function selectQuestion(qi){
+  state.selectedQ = (state.selectedQ === qi) ? null : qi;
+  state.focus = null;
+  renderQuestions(); renderRail();
+  if (state.selectedQ !== null && part().questions.length > 1){
+    var q = part().questions[qi], n = q.errors.length;
+    toast('Q' + q.n + ' · ' + (n ? 'showing ' + n + ' error' + (n>1?'s':'') : 'no errors flagged'));
+  }
+}
+
+function focusError(qi, eid, fromTranscript){
+  qi = +qi;
+  state.focus = { q:qi, e:eid };
+  if (state.selectedQ !== null) state.selectedQ = qi;
+  var q = part().questions[qi];
+  var er = q.errors.filter(function(x){ return x.id === eid; })[0];
+  if (er) seek(qi, Math.max(0, er.t - 1.5));
+  renderQuestions(); renderRail();
+  var target = fromTranscript
+    ? document.querySelector('.evcard[data-q="'+qi+'"][data-e="'+eid+'"]')
+    : document.getElementById('qcard-'+qi);
+  if (target) target.scrollIntoView({ block:'nearest', behavior:'smooth' });
+}
+
+/* ============================ fake playback ============================ */
+function seek(qi, t){
+  var key = qkey(state.part, qi), q = part().questions[qi];
+  state.pos[key] = Math.max(0, Math.min(q.dur, t));
+  paint(qi);
+}
+function paint(qi){
+  var key = qkey(state.part, qi), q = part().questions[qi], pos = state.pos[key] || 0;
+  var wave = document.querySelector('[data-wave="'+qi+'"]');
+  var time = document.querySelector('[data-time="'+qi+'"]');
+  if (wave) wave.innerHTML = waveSvg(qi, q, pos);
+  if (time) time.textContent = fmt(pos) + ' / ' + fmt(q.dur);
+  document.querySelectorAll('.qcard').forEach(function(c){
+    c.classList.toggle('active', state.playingKey === qkey(state.part, +c.dataset.q));
+  });
+}
+function stopAudio(){
+  clearInterval(state.timer); state.timer = null; state.playingKey = null; state.chain = false;
+}
+function togglePlay(qi){
+  var key = qkey(state.part, qi);
+  if (state.playingKey === key){ stopAudio(); renderQuestions(); return; }
+  stopAudio();
+  state.playingKey = key;
+  if ((state.pos[key] || 0) >= part().questions[qi].dur) state.pos[key] = 0;
+  state.timer = setInterval(function(){
+    var q = part().questions[qi];
+    state.pos[key] = (state.pos[key] || 0) + 0.5;
+    if (state.pos[key] >= q.dur){
+      state.pos[key] = q.dur;
+      var chaining = state.chain, next = qi + 1;
+      stopAudio(); renderQuestions();
+      if (chaining && next < part().questions.length){ state.chain = true; togglePlay(next); }
+      return;
+    }
+    paint(qi);
+  }, 220);
+  renderQuestions();
+}
+
+/* ============================ wiring ============================ */
+document.getElementById('playAll').addEventListener('click', function(){
+  stopAudio();
+  state.chain = true;
+  part().questions.forEach(function(q,qi){ state.pos[qkey(state.part,qi)] = 0; });
+  togglePlay(0);
+  toast('Playing all ' + part().questions.length + ' answer' + (part().questions.length>1?'s':'') + ' in order');
+});
+document.querySelectorAll('#speeds button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('#speeds button').forEach(function(x){ x.classList.remove('active'); });
+    b.classList.add('active');
+  });
+});
+document.querySelectorAll('.tabs button').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabs button').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.tabpanel').forEach(function(pn){ pn.hidden = pn.dataset.panel !== btn.dataset.tab; });
+  });
+});
+document.getElementById('finalScore').addEventListener('input', function(){
+  toast('Band is averaged from the four criteria below');
+});
+document.getElementById('regradeBtn').addEventListener('click', function(){ toast('Re-grading ' + part().name + ' with AI…'); });
+document.getElementById('sendBtn').addEventListener('click', function(){
+  var ungraded = PARTS.filter(function(p){ return bandOf(p) === null; });
+  if (ungraded.length){
+    toast(ungraded.map(function(p){ return p.name; }).join(', ') + ' still needs a band');
+    return;
+  }
+  document.getElementById('savedLbl').textContent = 'sent';
+  toast('Sent to student');
+});
+
+/* highlight a run of transcript text to mark it */
+document.addEventListener('mouseup', function(ev){
+  if (ev.target.closest('#markpop')) return;
+  setTimeout(openMarkPopover, 0);          /* let the selection settle first */
+});
+document.getElementById('popClose').addEventListener('click', function(){
+  closeMarkPopover();
+  window.getSelection().removeAllRanges();
+});
+document.addEventListener('keydown', function(ev){
+  if (ev.key === 'Escape' && !document.getElementById('markpop').hidden){
+    closeMarkPopover();
+    window.getSelection().removeAllRanges();
+  }
+});
+document.addEventListener('mousedown', function(ev){
+  if (!document.getElementById('markpop').hidden && !ev.target.closest('#markpop')) closeMarkPopover();
+});
+
+var toastTimer;
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('on'); }, 1800);
+}
+
+function renderAll(){ renderParts(); renderHead(); renderQuestions(); renderGrading(); renderRollup(); renderRail(); }
+renderAll();
+})();
+</script>
