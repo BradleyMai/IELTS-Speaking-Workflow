@@ -411,17 +411,19 @@ textarea{font-family:inherit}
 .saved span{flex:1;min-width:180px}
 
 /* ---------------- Ed, the LearnED mascot (AI grading) ---------------- */
-:root{--ed:#4A63E7;--ed-deep:#3A50CC;--ed-soft:#E4E8FC;--lime:#DFF77A;--lime-deep:#C9E650}
+:root{--ed:#4A63E7;--ed-deep:#3A50CC;--ed-soft:#E4E8FC;--lime:#DFF77A;--lime-deep:#C9E650;--ed-bg:#15182B;--ed-bg-2:#22274A}
+/* Ed always sits on a dark midnight tile, so his blue body and white face stand out. */
+.edtile{display:grid;place-items:center;flex:none;background:var(--ed-bg);border:var(--line-thin);border-radius:16px;box-shadow:inset 0 0 0 3px var(--ed-bg-2)}
 .edmark{display:block;flex:none}
 .coach.ed{background:var(--cream)}
 .coach.ed .coachhead .tag{color:var(--ed-deep)}
 .pill.edband{background:var(--ed);color:#fff;border-color:var(--ink)}
-.gradehead.ed{background:var(--ed);color:#fff}
+.gradehead.ed{background:var(--ed-bg);color:#fff}
 .gradehead.ed .lbl,.gradehead.ed .pb .n,.gradehead.ed .overall .n{color:var(--lime)}
-.gradehead.ed .sub{color:#E4E8FC}
+.gradehead.ed .sub{color:#C9CEE8}
 .gradehead.ed .overall .v{color:var(--lime)}
 .gradehead.ed .who{display:flex;align-items:center;gap:14px}
-.gradehead.ed .who .edmark{background:var(--lime);border:var(--line-thin);border-radius:16px;padding:6px}
+.gradehead.ed .edtile{width:68px;height:68px;border-color:#3A4170}
 .improved{
   margin-top:9px;border:1.8px solid var(--ink);border-radius:var(--r-sm);
   background:var(--ed-soft);padding:10px 12px;
@@ -454,11 +456,11 @@ textarea{font-family:inherit}
   padding:16px;transition:transform .12s ease-out;
 }
 .choice:hover{transform:translateY(-2px)}
-.choice.ed{background:var(--ed-soft)}
+.choice.ed{background:var(--cream-2)}
 .choice.ed:hover{background:#D6DCFA}
 .choice.teacher:hover{background:var(--yellow-soft)}
 .choice .face{width:58px;height:58px;border:var(--line-thin);border-radius:16px;display:grid;place-items:center;flex:none}
-.choice.ed .face{background:var(--lime)}
+.choice.ed .face{background:var(--ed-bg);box-shadow:inset 0 0 0 3px var(--ed-bg-2)}
 .choice.teacher .face{background:var(--yellow);font-size:18px;font-weight:800}
 .choice .nm{font-size:19px;font-weight:800}
 .choice .d{margin:0;font-family:var(--font-read);font-size:13.5px;line-height:1.5;color:var(--ink-2)}
@@ -1139,7 +1141,7 @@ function sendToEd(){
 
   var el = document.createElement('div');
   el.className = 'turn coach ed';
-  el.innerHTML = '<div class="edgrading">' + edSvg(54)
+  el.innerHTML = '<div class="edgrading"><span class="edtile" style="width:68px;height:68px">' + edSvg(52) + '</span>'
     + '<div><div class="coachhead" style="margin:0 0 4px"><span class="tag">Ed is grading</span>'
     + '<span class="pill">Listening to ' + answerCount() + ' answers…</span></div>'
     + '<div class="dots"><i></i><i></i><i></i></div></div></div>';
@@ -1331,7 +1333,7 @@ function addWrapUp(G){
   var isEd = G.key === 'ed';
   el.className = 'turn gradehead' + (isEd ? ' ed' : '');
   el.innerHTML =
-    '<div class="who">' + (isEd ? edSvg(56) : '') + '<div>'
+    '<div class="who">' + (isEd ? '<span class="edtile">' + edSvg(52) + '</span>' : '') + '<div>'
       + '<div class="lbl">' + (isEd ? 'Graded by Ed' : 'Graded by your teacher') + '</div>'
       + '<h2>' + esc(G.name) + '</h2>'
       + '<p class="sub">' + esc(G.role) + ' · marked ' + esc(G.graded) + '<br>'
