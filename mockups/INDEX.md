@@ -12,10 +12,10 @@ in your browser, or use the link to open the published version.
 | `interview-part-2.html` | IELTS mock interview part 2 | https://claude.ai/artifact/HPwhMvsFrDozUbejFgqF73 |
 | `interview-part-3.html` | IELTS mock interview part 3 | https://claude.ai/artifact/12Uhqhs3BsHmsjXJ4a8c6N |
 | `speaking-grading-screen.html` | Speaking Grading Screen | https://claude.ai/artifact/Rr7JkfZ7GXajpbhxd9nULV |
-| `interview-send-full.html` | IELTS mock interview send full | not published yet |
-| `interview-send-part-1.html` | IELTS mock interview send part 1 | not published yet |
-| `interview-send-part-2.html` | IELTS mock interview send part 2 | not published yet |
-| `interview-send-part-3.html` | IELTS mock interview send part 3 | not published yet |
+| `interview-send-full.html` | IELTS mock interview send full | https://claude.ai/artifact/MscrZe7trbc3gtwPjhJTp8 |
+| `interview-send-part-1.html` | IELTS mock interview send part 1 | https://claude.ai/artifact/4Qapd35du2z4gxhtvSMSah |
+| `interview-send-part-2.html` | IELTS mock interview send part 2 | https://claude.ai/artifact/Nti53pYqWLwPZ8rZ6NfwkR |
+| `interview-send-part-3.html` | IELTS mock interview send part 3 | https://claude.ai/artifact/2vERLV4udHLphrqrriVzE9 |
 
 ## What each one is
 
