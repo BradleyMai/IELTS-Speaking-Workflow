@@ -1,0 +1,385 @@
+<title>IELTS Speaking Workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+/* Layout: the workflow as a flow chart on the left (one trunk that forks into the Ed path and the
+   teacher path), and a live screen on the right. Clicking a step loads the mockup at that moment.
+   One committed light look, in the same drafting-board vocabulary as the student mockups. */
+:root{
+  color-scheme:light;
+  --board:#EFE9D8; --grid:rgba(28,21,8,.06);
+  --card:#FFFDF6; --ink:#1C1508; --ink-2:#4A3D1E; --ink-3:#8A7C5A; --line:#1C1508;
+  --student:#F7DC5E; --student-soft:#FBF1B5;
+  --ed:#4A63E7; --ed-bg:#15182B; --ed-soft:#E4E8FC;
+  --teacher:#EA580C; --teacher-soft:#FFE6D6;
+  --new:#3F6B3C; --new-soft:#E3F0E0;
+  --font-ui:'Outfit',system-ui,-apple-system,sans-serif;
+  --font-read:'DM Sans',system-ui,sans-serif;
+  --r:14px; --shadow:0 3px 0 rgba(28,21,8,.16);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;font-family:var(--font-ui);color:var(--ink);background-color:var(--board);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+button{font-family:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--ed);outline-offset:2px}
+
+.page{display:grid;grid-template-columns:minmax(330px,440px) minmax(0,1fr);gap:18px;height:100%;padding:16px}
+@media (max-width:900px){.page{grid-template-columns:1fr;height:auto}}
+
+/* ---------------- left: the flow ---------------- */
+.flowcol{display:flex;flex-direction:column;gap:12px;min-height:0;overflow:auto;padding-right:4px}
+.title h1{margin:0;font-size:22px;font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+.title p{margin:4px 0 0;font-family:var(--font-read);font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.legend{display:flex;gap:6px;flex-wrap:wrap}
+.who{
+  display:inline-flex;align-items:center;gap:6px;border:1.6px solid var(--ink);border-radius:999px;
+  padding:2px 9px 2px 3px;font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;background:var(--card)
+}
+.who i{width:14px;height:14px;border-radius:999px;border:1.6px solid var(--ink);display:block}
+.who.student i{background:var(--student)}
+.who.ed i{background:var(--ed-bg);border-color:var(--ed-bg);box-shadow:inset 0 0 0 3px var(--ed)}
+.who.teacher i{background:var(--teacher)}
+.newtag{
+  display:inline-block;border:1.6px solid var(--new);color:var(--new);background:var(--new-soft);border-radius:999px;
+  padding:1px 7px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase
+}
+
+.flow{display:flex;flex-direction:column;align-items:stretch}
+.col{display:flex;flex-direction:column;align-items:stretch}
+.step{
+  position:relative;text-align:left;width:100%;
+  background:var(--card);border:2px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
+  padding:10px 12px 11px 12px;display:flex;flex-direction:column;gap:5px;transition:transform .1s ease-out
+}
+.step:hover{transform:translateY(-1px)}
+.step[aria-current="true"]{box-shadow:0 0 0 4px var(--ink),var(--shadow)}
+.step .top{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.step .num{font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--ink-3)}
+.step .nm{font-size:14.5px;font-weight:700;line-height:1.25;text-wrap:balance}
+.step .d{font-family:var(--font-read);font-size:12.5px;line-height:1.45;color:var(--ink-2)}
+.step.student{border-left:8px solid var(--student)}
+.step.ed{border-left:8px solid var(--ed)}
+.step.teacher{border-left:8px solid var(--teacher)}
+.step.decision{background:repeating-linear-gradient(-45deg,var(--card) 0 10px,#F7F2E2 10px 20px)}
+.step.decision .num::after{content:' · decision';text-transform:uppercase;letter-spacing:.06em}
+
+/* arrows between steps */
+.arrow{height:22px;display:grid;place-items:center}
+.arrow::before{content:'';width:2px;height:100%;background:var(--line)}
+.arrow{position:relative}
+.arrow::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top:7px solid var(--line);border-bottom:0}
+
+/* the fork after "who grades it?" */
+.fork{position:relative;height:40px;margin:0 25%}
+.fork::before{content:'';position:absolute;left:50%;top:0;width:2px;height:14px;background:var(--line)}
+.fork::after{content:'';position:absolute;left:0;right:0;top:14px;height:2px;background:var(--line)}
+.fork span{position:absolute;top:14px;width:2px;height:26px;background:var(--line)}
+.fork span.l{left:0}.fork span.r{right:0}
+.branches{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.blabel{
+  align-self:center;margin-bottom:6px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:999px;padding:3px 10px;border:1.6px solid var(--ink)
+}
+.blabel.ed{background:var(--ed-bg);color:#fff;border-color:var(--ed-bg)}
+.blabel.teacher{background:var(--teacher-soft)}
+.joinnote{
+  margin-top:10px;border:2px dashed var(--ink-3);border-radius:12px;padding:8px 10px;
+  font-family:var(--font-read);font-size:12px;line-height:1.45;color:var(--ink-2);background:rgba(255,253,246,.6)
+}
+.joinnote b{font-family:var(--font-ui)}
+@media (max-width:420px){.branches{grid-template-columns:1fr}.fork{display:none}}
+
+/* ---------------- right: the screen ---------------- */
+.viewer{
+  display:flex;flex-direction:column;min-height:0;min-width:0;
+  background:var(--card);border:2px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden
+}
+@media (max-width:900px){.viewer{height:82vh;position:relative}}
+.vhead{padding:14px 16px 12px;border-bottom:2px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.vrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vhead h2{margin:0;font-size:19px;font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+.vhead p{margin:0;font-family:var(--font-read);font-size:13.5px;line-height:1.5;color:var(--ink-2);max-width:75ch}
+.vnum{font-size:12px;font-weight:800;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.grow{flex:1}
+.nav{display:flex;gap:6px}
+.nav button,.tabs button{
+  border:1.8px solid var(--ink);background:var(--card);border-radius:10px;padding:6px 11px;font-size:13px;font-weight:700
+}
+.nav button:hover,.tabs button:hover{background:var(--student-soft)}
+.nav button:disabled{opacity:.35;cursor:default;background:var(--card)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--card)}
+.file{font-size:12px;font-family:var(--font-read);color:var(--ink-3)}
+.file code{font-size:12px;color:var(--ink-2);background:var(--board);border-radius:5px;padding:1px 5px}
+.file a{color:var(--ink-2);font-weight:600}
+.stage{position:relative;flex:1;min-height:0;background:#D9D2BD;overflow:hidden}
+.stage iframe{position:absolute;top:0;left:0;border:0;background:#fff;transform-origin:0 0}
+.loading{
+  position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--ink-2);
+  background:rgba(239,233,216,.85)
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="page">
+  <section class="flowcol" aria-label="Workflow">
+    <div class="title">
+      <h1>IELTS Speaking Workflow</h1>
+      <p>From picking a test to reading the grading. Click any step to see its screen at that moment.</p>
+    </div>
+    <div class="legend">
+      <span class="who student"><i></i>Student</span>
+      <span class="who ed"><i></i>Ed (AI)</span>
+      <span class="who teacher"><i></i>Teacher</span>
+      <span class="newtag">New screen</span>
+    </div>
+    <div class="flow" id="flow"></div>
+  </section>
+
+  <section class="viewer" aria-label="Screen for the selected step">
+    <div class="vhead">
+      <div class="vrow">
+        <span class="vnum" id="vNum"></span>
+        <span id="vWho"></span>
+        <span id="vNew"></span>
+        <span class="grow"></span>
+        <div class="nav">
+          <button id="prevBtn" aria-label="Previous step">← Prev</button>
+          <button id="nextBtn" aria-label="Next step">Next →</button>
+        </div>
+      </div>
+      <h2 id="vTitle"></h2>
+      <p id="vText"></p>
+      <div class="vrow">
+        <div class="tabs" id="vTabs" role="tablist"></div>
+        <span class="grow"></span>
+        <span class="file" id="vFile"></span>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="loading" id="loading">Loading screen…</div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* Each step names the screen(s) that show it. `at` opens a mockup at a given moment: the
+   mockup fast-forwards the test with sample answers and stops there. */
+var STEPS = [
+  { id:'s1', n:'1', who:'student', title:'Choose what to practise',
+    text:'The student picks one part on its own, or the full test with Parts 1, 2 and 3 in order.',
+    screens:[{ label:'Chooser', file:'interview-choose-part.html' }] },
+  { id:'s2', n:'2', who:'student', title:'Answer the questions',
+    text:'The examiner asks each question and the student records an answer. Part 2 is a cue card with one minute to prepare. In the full test the next part starts straight away, with no feedback in between.',
+    screens:[
+      { label:'Full test', file:'interview-send-full.html' },
+      { label:'Part 1', file:'interview-send-part-1.html' },
+      { label:'Part 2', file:'interview-send-part-2.html' },
+      { label:'Part 3', file:'interview-send-part-3.html' }
+    ] },
+  { id:'s3', n:'3', who:'student', title:'Press Finish',
+    text:'The examiner closes the test and every recording is saved. Nothing is graded yet.',
+    screens:[
+      { label:'Full test', file:'interview-send-full.html', at:'finished' },
+      { label:'Part 2', file:'interview-send-part-2.html', at:'finished' }
+    ] },
+  { id:'s4', n:'4', who:'student', decision:true, title:'Who should grade it?',
+    text:'A popup asks the student to send the test to Ed for instant grading, or to their teacher.',
+    screens:[
+      { label:'Full test', file:'interview-send-full.html', at:'picker' },
+      { label:'Single part', file:'interview-send-part-3.html', at:'picker' }
+    ] },
+
+  { id:'e1', n:'A1', branch:'ed', who:'ed', title:'Ed grades the test',
+    text:'Ed listens to every answer and grades it in seconds.',
+    screens:[{ label:'Ed grading', file:'interview-send-full.html', at:'ed-grading' }] },
+  { id:'e2', n:'A2', branch:'ed', who:'student', title:'Student reads Ed’s grading',
+    text:'Bands for each criterion and part, the mistakes in every answer with corrections, and Ed’s better version of each answer.',
+    screens:[
+      { label:'Full test', file:'interview-send-full.html', at:'ed' },
+      { label:'Part 1', file:'interview-send-part-1.html', at:'ed' }
+    ] },
+
+  { id:'t1', n:'B1', branch:'teacher', who:'student', title:'“Teacher has received your submission”',
+    text:'A status tracker shows Submitted, Being graded and Returned. The student can close the page.',
+    screens:[
+      { label:'Full test', file:'interview-send-full.html', at:'sent' },
+      { label:'Part 2', file:'interview-send-part-2.html', at:'sent' }
+    ] },
+  { id:'t2', n:'B2', branch:'teacher', who:'teacher', isNew:true, title:'Submission reaches the teacher’s queue',
+    text:'The teacher’s list of speaking tests to grade, oldest first, with Ed’s draft already prepared and the 48-hour deadline.',
+    screens:[{ label:'Queue', file:'teacher-queue.html', isNew:true }] },
+  { id:'t3', n:'B3', branch:'teacher', who:'teacher', decision:true, isNew:true, title:'Review Ed’s draft, or grade from scratch?',
+    text:'When the teacher opens a submission, they choose to start from Ed’s grading or mark it themselves. Choosing one jumps to the next step.',
+    screens:[{ label:'Grading choice', file:'teacher-queue.html', at:'choose', isNew:true }] },
+  { id:'t4', n:'B4', branch:'teacher', who:'teacher', title:'Teacher grades',
+    text:'The teacher listens to the recordings, marks errors in the transcript and sets bands for each part.',
+    screens:[
+      { label:'Reviewing Ed’s draft', file:'speaking-grading-screen.html' },
+      { label:'From scratch', file:'speaking-grading-screen.html', at:'scratch', isNew:true }
+    ] },
+  { id:'t5', n:'B5', branch:'teacher', who:'teacher', title:'Send to student',
+    text:'Once every part has a band, the teacher sends the grading back.',
+    screens:[{ label:'Sent', file:'speaking-grading-screen.html', at:'sent' }] },
+  { id:'t6', n:'B6', branch:'teacher', who:'student', title:'Student is notified',
+    text:'A notification says the teacher has graded the test.',
+    screens:[
+      { label:'Full test', file:'interview-send-full.html', at:'returned' },
+      { label:'Part 2', file:'interview-send-part-2.html', at:'returned' }
+    ] },
+  { id:'t7', n:'B7', branch:'teacher', who:'student', title:'Student reads the teacher’s grading',
+    text:'The teacher’s bands, comments and corrections on every answer.',
+    screens:[
+      { label:'Full test', file:'interview-send-full.html', at:'teacher' },
+      { label:'Part 2', file:'interview-send-part-2.html', at:'teacher' }
+    ] }
+];
+var WHO = { student:'Student', ed:'Ed (AI)', teacher:'Teacher' };
+var byId = {};
+STEPS.forEach(function(s, i){ s.i = i; byId[s.id] = s; });
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function whoChip(w){ return '<span class="who ' + w + '"><i></i>' + WHO[w] + '</span>'; }
+
+/* ---------------- draw the flow ---------------- */
+function stepHtml(s){
+  return '<button class="step ' + s.who + (s.decision ? ' decision' : '') + '" data-step="' + s.id + '" aria-current="false">'
+    + '<span class="top"><span class="num">' + s.n + '</span>' + whoChip(s.who)
+    + (s.isNew ? '<span class="newtag">New</span>' : '') + '</span>'
+    + '<span class="nm">' + esc(s.title) + '</span></button>';
+}
+function column(list){
+  return list.map(stepHtml).join('<div class="arrow" aria-hidden="true"></div>');
+}
+var trunk = STEPS.filter(function(s){ return !s.branch; });
+var edPath = STEPS.filter(function(s){ return s.branch === 'ed'; });
+var tPath = STEPS.filter(function(s){ return s.branch === 'teacher'; });
+document.getElementById('flow').innerHTML =
+  '<div class="col">' + column(trunk) + '</div>'
+  + '<div class="fork" aria-hidden="true"><span class="l"></span><span class="r"></span></div>'
+  + '<div class="branches">'
+    + '<div class="col"><span class="blabel ed">Send to Ed</span>' + column(edPath)
+      + '<div class="joinnote"><b>Also send to your teacher.</b> After reading Ed’s grading, the student can send the same test to the teacher. It joins the teacher path at B1.</div></div>'
+    + '<div class="col"><span class="blabel teacher">Send to teacher</span>' + column(tPath) + '</div>'
+  + '</div>';
+
+/* ---------------- the screen viewer ---------------- */
+var stage = document.getElementById('stage');
+var loading = document.getElementById('loading');
+var cache = {};
+var current = null, tab = 0, frame = null, loadSeq = 0;
+var VIRTUAL_W = 1280;
+
+/* Load a mockup with its preset. Fetching the file and writing it into srcdoc lets us hand the
+   page its moment (window.__AT). If fetching is not possible (opened from disk), fall back to a
+   normal src with #at=... in the URL, which the mockups also read. */
+function getSource(file){
+  if (cache[file]) return Promise.resolve(cache[file]);
+  return fetch(file).then(function(r){
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.text();
+  }).then(function(t){ cache[file] = t; return t; });
+}
+function withPreset(html, at){
+  var inject = '<script>window.__AT=' + JSON.stringify(at || '') + ';<\/script>';
+  if (!/^\s*<!doctype/i.test(html)){
+    html = '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+      + '<meta name="viewport" content="width=device-width, initial-scale=1">'
+      + '<style>body{margin:0;font-size:14px}[hidden]{display:none!important}</style>'
+      + html.replace(/<\/style>/, '</style></head><body>') + '</body></html>';
+  }
+  return html.replace(/<head>/i, '<head>' + inject);
+}
+
+function fit(){
+  if (!frame) return;
+  var w = stage.clientWidth, h = stage.clientHeight;
+  var vw = w < 640 ? w : VIRTUAL_W;
+  var scale = w / vw;
+  frame.style.width = vw + 'px';
+  frame.style.height = Math.ceil(h / scale) + 'px';
+  frame.style.transform = 'scale(' + scale + ')';
+}
+window.addEventListener('resize', fit);
+
+function loadScreen(scr){
+  var seq = ++loadSeq;
+  loading.hidden = false;
+  if (frame) frame.remove();
+  frame = document.createElement('iframe');
+  frame.title = current.title + ' · ' + scr.label;
+  frame.addEventListener('load', function(){ if (seq === loadSeq) loading.hidden = true; });
+  stage.appendChild(frame);
+  fit();
+  getSource(scr.file).then(function(html){
+    if (seq !== loadSeq) return;
+    frame.srcdoc = withPreset(html, scr.at);
+  }).catch(function(){
+    if (seq !== loadSeq) return;
+    frame.src = scr.file + (scr.at ? '#at=' + scr.at : '');
+  });
+}
+
+function select(id, t){
+  var s = byId[id] || STEPS[0];
+  current = s;
+  tab = Math.min(t || 0, s.screens.length - 1);
+  document.querySelectorAll('[data-step]').forEach(function(b){
+    b.setAttribute('aria-current', String(b.dataset.step === s.id));
+  });
+  document.getElementById('vNum').textContent = 'Step ' + s.n;
+  document.getElementById('vWho').innerHTML = whoChip(s.who);
+  document.getElementById('vNew').innerHTML = s.isNew ? '<span class="newtag">New screen</span>' : '';
+  document.getElementById('vTitle').textContent = s.title;
+  document.getElementById('vText').textContent = s.text;
+  document.getElementById('prevBtn').disabled = s.i === 0;
+  document.getElementById('nextBtn').disabled = s.i === STEPS.length - 1;
+  renderTabs();
+  try { history.replaceState(null, '', '#' + s.id); } catch(e){}
+}
+
+function renderTabs(){
+  var s = current;
+  document.getElementById('vTabs').innerHTML = s.screens.length > 1
+    ? s.screens.map(function(scr, i){
+        return '<button role="tab" aria-selected="' + (i === tab) + '" data-tab="' + i + '">' + esc(scr.label)
+          + (scr.isNew && !s.isNew ? ' ·&nbsp;new' : '') + '</button>';
+      }).join('')
+    : '';
+  document.querySelectorAll('[data-tab]').forEach(function(b){
+    b.addEventListener('click', function(){ tab = +b.dataset.tab; renderTabs(); });
+  });
+  var scr = s.screens[tab];
+  document.getElementById('vFile').innerHTML = 'Screen: <code>' + esc(scr.file) + '</code>'
+    + (scr.at ? ' at <code>' + esc(scr.at) + '</code>' : '');
+  loadScreen(scr);
+}
+
+document.getElementById('flow').addEventListener('click', function(e){
+  var b = e.target.closest('[data-step]');
+  if (!b) return;
+  select(b.dataset.step, 0);
+  if (window.matchMedia('(max-width:900px)').matches)
+    document.querySelector('.viewer').scrollIntoView({ behavior:'smooth', block:'start' });
+});
+document.getElementById('prevBtn').addEventListener('click', function(){ select(STEPS[current.i - 1].id, 0); });
+document.getElementById('nextBtn').addEventListener('click', function(){ select(STEPS[current.i + 1].id, 0); });
+
+/* The teacher queue asks to jump to step B4 when a grading mode is chosen. */
+window.addEventListener('message', function(e){
+  var d = e.data;
+  if (d && d.workflow === 'goto' && byId[d.step]) select(d.step, d.tab || 0);
+});
+
+var start = (location.hash || '').replace('#', '');
+select(byId[start] ? start : 's1', 0);
+})();
+</script>

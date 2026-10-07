@@ -1134,7 +1134,7 @@ picker.addEventListener('click', function(e){ if (e.target === picker) closePick
 document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !picker.hidden) closePicker(); });
 
 /* ---------------- path 1: Ed grades it now ---------------- */
-function sendToEd(){
+function sendToEd(hold){
   state.graders.push('ed');
   state.stage = 'analysing';
   renderComposer();
@@ -1148,6 +1148,7 @@ function sendToEd(){
   thread.appendChild(el);
   scrollDown();
 
+  if (hold) return;      /* preset: keep Ed mid-grading */
   setTimeout(function(){
     el.remove();
     showGrading(ED);
@@ -1199,7 +1200,7 @@ function teacherReturns(){
   document.getElementById('noticeBtn').focus();
 }
 
-function openTeacherGrading(){
+function openTeacherGrading(instant){
   document.getElementById('notice').hidden = true;
   if (teacherStatus !== 'returned') return;
   teacherStatus = 'shown';
@@ -1218,13 +1219,13 @@ function openTeacherGrading(){
 
   setTimeout(function(){
     el.remove();
-    showGrading(TEACHER);
-  }, 1100);
+    showGrading(TEACHER, instant);
+  }, instant ? 0 : 1100);
 }
-document.getElementById('noticeBtn').addEventListener('click', openTeacherGrading);
+document.getElementById('noticeBtn').addEventListener('click', function(){ openTeacherGrading(); });
 
 /* ---------------- the graded view, same for both ---------------- */
-function showGrading(G){
+function showGrading(G, instant){
   var mark = document.createElement('div');
   mark.id = 'grading-' + G.key;
   thread.appendChild(mark);
@@ -1236,7 +1237,7 @@ function showGrading(G){
   state.stage = 'done';
   renderRail();
   renderComposer();
-  mark.scrollIntoView({ behavior:'smooth', block:'start' });
+  mark.scrollIntoView({ behavior: instant ? 'auto' : 'smooth', block:'start' });
 }
 
 /* ---------------- playback, inside the feedback panel only ----------------
@@ -1486,7 +1487,7 @@ function renderComplete(){
   on('restartBtn', restart);
   on('topBtn', function(){ thread.scrollTo({ top:0, behavior:'smooth' }); });
   on('demoBtn', teacherReturns);
-  on('viewBtn', openTeacherGrading);
+  on('viewBtn', function(){ openTeacherGrading(); });
   on('alsoTeacherBtn', sendToTeacher);
 }
 
@@ -1629,6 +1630,68 @@ function start(){
 document.getElementById('endBtn').addEventListener('click', restart);
 document.getElementById('replayBtn').addEventListener('click', scrollDown);
 
-start();
+/* ============================ preset (workflow explorer) ============================
+   The workflow page opens this screen at one moment by setting window.__AT (or #at=... in the
+   URL). The test is fast-forwarded with the sample answers, then moved to that moment:
+   finished · picker · ed-grading · ed · sent · returned · teacher. */
+var AT = window.__AT || (location.hash.match(/at=([\w-]+)/) || [])[1] || '';
+
+function staticExaminer(tag, text){
+  var turn = document.createElement('div');
+  turn.className = 'turn';
+  turn.innerHTML = '<div class="ask"><div class="quotemark">&rdquo;</div><div class="bubble">'
+    + '<div class="tag">' + esc(tag) + '</div><div class="askrow">'
+    + '<button class="hearbtn" aria-label="Hear this again"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>'
+    + '<p class="say">' + esc(text) + '</p></div></div></div>';
+  thread.appendChild(turn);
+}
+
+function fastForward(){
+  thread.innerHTML = '';
+  PARTS.forEach(function(p, pi){
+    state.p = pi;
+    if (pi > 0) staticExaminer('Examiner', pi === 1 ? SCRIPT.toPart2 : SCRIPT.toPart3);
+    divider(p.name + ' · ' + p.desc, true);
+    if (p.kind === 'cue'){
+      var c = p.cue, el = document.createElement('div');
+      el.className = 'turn cue';
+      el.innerHTML = '<div class="tag">Examiner · Candidate task card</div>'
+        + '<h2>' + esc(c.title) + '</h2><div class="lead">You should say:</div>'
+        + '<ul>' + c.bullets.map(function(b){ return '<li>' + esc(b) + '</li>'; }).join('') + '</ul>'
+        + '<p class="explain">' + esc(c.explain) + '</p>';
+      thread.appendChild(el);
+      var secs = Math.round(words(p.sample).length / 1.3);
+      state.log[pi].push({ text:p.sample, words:words(p.sample).length, secs:secs });
+      addAnswer(p.sample, secs, p.name + ' · Long turn');
+    } else {
+      p.questions.forEach(function(q, qi){
+        if (qi === 0 || p.questions[qi - 1].set !== q.set) divider(p.name + ' · ' + q.set);
+        staticExaminer('Examiner · ' + p.name + ' · Question ' + (qi + 1) + ' of ' + p.questions.length, q.q);
+        var secs = Math.round(words(q.sample).length / 2.1);
+        state.log[pi].push({ text:q.sample, words:words(q.sample).length, secs:secs });
+        addAnswer(q.sample, secs, p.name + ' · Question ' + (qi + 1));
+      });
+      state.q = p.questions.length - 1;
+    }
+  });
+  staticExaminer('Examiner', SCRIPT.closing);
+  state.stage = 'ended';
+  renderRail();
+  renderComposer();
+  scrollDown();
+}
+
+if (!AT) start();
+else {
+  fastForward();
+  if (AT === 'picker') openPicker();
+  else if (AT === 'ed-grading') sendToEd(true);
+  else if (AT === 'ed'){ state.graders.push('ed'); showGrading(ED, true); }
+  else if (AT === 'sent' || AT === 'returned' || AT === 'teacher'){
+    sendToTeacher();
+    if (AT !== 'sent') teacherReturns();
+    if (AT === 'teacher') openTeacherGrading(true);
+  }
+}
 })();
 </script>

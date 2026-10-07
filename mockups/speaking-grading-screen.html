@@ -572,6 +572,20 @@ PARTS.forEach(function(p){
   });
 });
 
+/* ============================ preset (workflow explorer) ============================
+   The workflow page opens this screen at a given moment by setting window.__AT, or #at=... in
+   the URL. 'scratch' = the teacher chose to grade without Ed's draft: no AI bands, flags or
+   rewrites. 'sent' = the teacher has pressed Send to student. */
+var AT = window.__AT || (location.hash.match(/at=([\w-]+)/) || [])[1] || '';
+var SCRATCH = AT === 'scratch';
+if (SCRATCH){
+  PARTS.forEach(function(p){
+    p.bands = { fluency:null, pron:null, lexical:null, grammar:null };
+    p.overview = '';
+    p.questions.forEach(function(q){ q.errors = []; q.improved = ''; });
+  });
+}
+
 /* ============================ state ============================ */
 var state = { part:0, focus:null, selectedQ:null, playingKey:null, pos:{}, timer:null, chain:false, pending:null };
 
@@ -731,7 +745,7 @@ function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt
 
 function renderGrading(){
   var p = part(), b = bandOf(p);
-  document.getElementById('aiBandLbl').textContent = aiBandOf(p).toFixed(1);
+  document.getElementById('aiBandLbl').textContent = SCRATCH ? 'off' : aiBandOf(p).toFixed(1);
   document.getElementById('finalScore').value = b === null ? '' : b.toFixed(1);
   document.getElementById('finalScore').placeholder = '—';
   document.getElementById('overviewText').value = p.overview;
@@ -749,7 +763,7 @@ function renderGrading(){
     return '<div class="critcard '+c.cls+'">'
       + '<div class="critrow"><div><div class="critname">'+c.name
       + ' <span class="critcount'+(marked ? ' has' : '')+'">'+marked+' marked</span></div>'
-      + '<div class="critsub">'+(edited ? 'AI suggested '+ai.toFixed(1)+' · changed' : 'AI suggested '+ai.toFixed(1))+'</div></div>'
+      + '<div class="critsub">'+(SCRATCH ? 'Grading from scratch' : edited ? 'AI suggested '+ai.toFixed(1)+' · changed' : 'AI suggested '+ai.toFixed(1))+'</div></div>'
       + '<div class="critscore"><input class="mono" data-crit="'+c.key+'" value="'+(v===null?'':v.toFixed(1))+'" placeholder="—" inputmode="decimal"><span class="editlbl">Teacher</span></div></div>'
       + '<textarea placeholder="Comment for this criterion (optional)"></textarea></div>';
   }).join('');
@@ -1119,5 +1133,18 @@ function toast(msg){
 
 function renderAll(){ renderParts(); renderHead(); renderQuestions(); renderGrading(); renderRollup(); renderRail(); }
 renderAll();
+if (SCRATCH){
+  document.getElementById('regradeBtn').textContent = '↻ Show Ed’s draft';
+  toast('Grading from scratch · Ed’s draft is hidden');
+}
+if (AT === 'sent'){
+  document.getElementById('savedLbl').textContent = 'sent';
+  var sb = document.getElementById('sendBtn');
+  sb.textContent = 'Sent to student ✓';
+  sb.disabled = true;
+  var t = document.getElementById('toast');
+  t.textContent = 'Sent to Phạm Anh Thư · she has been notified';
+  t.classList.add('on');
+}
 })();
 </script>

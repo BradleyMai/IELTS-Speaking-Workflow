@@ -1,0 +1,270 @@
+<title>Speaking Submissions Queue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Teacher side, same visual system as speaking-grading-screen: the list of speaking tests
+   students have sent to the teacher, and the "how do you want to grade it?" choice. */
+:root{
+  color-scheme:light;
+  --bg:#F5F6F8; --surface:#FFFFFF; --surface-2:#FAFBFC;
+  --border:#E4E7EC; --border-strong:#D0D5DD;
+  --ink:#101828; --ink-2:#475467; --ink-3:#98A2B3;
+  --accent:#EA580C; --accent-ink:#FFFFFF; --accent-soft:#FFF1E9; --accent-line:#F7C39C; --accent-deep:#9A3412;
+  --ok:#15803D; --ok-bg:#EFFAF1; --ok-line:#BBE8C4;
+  --warn:#B45309; --warn-bg:#FEF3E0; --warn-line:#FBDFA6;
+  --info:#1D4ED8; --info-bg:#EEF3FF; --info-line:#C4D6FB;
+  --ed:#4A63E7; --ed-bg:#15182B; --ed-bg-2:#22274A;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,-apple-system,sans-serif}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+button{font-family:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+.app{max-width:1240px;margin:0 auto;padding:0 20px 40px}
+
+.topbar{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:14px 0;border-bottom:1px solid var(--border);
+}
+.avatar{
+  width:38px;height:38px;border-radius:999px;flex:none;
+  background:linear-gradient(135deg,#FFD9BF,var(--accent-soft));border:1px solid var(--accent-line);
+  display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--accent);
+}
+.who{display:flex;flex-direction:column;line-height:1.3}
+.who .name{font-weight:700;font-size:14.5px}
+.who .meta{font-size:12px;color:var(--ink-3)}
+.spacer{flex:1}
+.stat{display:flex;flex-direction:column;align-items:flex-end;line-height:1.2}
+.stat b{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{font-size:11px;font-weight:600;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}
+
+.head{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;padding:22px 0 14px}
+.head h1{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.head p{font-size:13.5px;color:var(--ink-2);margin-top:4px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{
+  border:1px solid var(--border);background:var(--surface);border-radius:8px;
+  padding:7px 12px;font-size:13px;font-weight:600;color:var(--ink-2);display:inline-flex;gap:7px;align-items:center
+}
+.tab .n{font-size:11.5px;font-weight:700;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:1px 7px}
+.tab[aria-current="true"]{border-color:var(--accent);color:var(--ink);box-shadow:0 0 0 3px var(--accent-soft)}
+.tab[aria-current="true"] .n{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.list{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.row{
+  display:grid;grid-template-columns:minmax(200px,1.5fr) minmax(150px,1fr) minmax(150px,1fr) minmax(120px,.8fr) auto;
+  gap:14px;align-items:center;padding:14px 18px;border-top:1px solid var(--border)
+}
+.row:first-child{border-top:none}
+.row.colhead{background:var(--surface-2);padding-block:9px}
+.row.colhead span{font-size:11px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.row.urgent{background:linear-gradient(90deg,var(--accent-soft),var(--surface) 40%)}
+.stu{display:flex;align-items:center;gap:11px;min-width:0}
+.stu .av{width:34px;height:34px;border-radius:999px;flex:none;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--surface-2);border:1px solid var(--border-strong);color:var(--ink-2)}
+.stu .nm{font-weight:700;font-size:14px}
+.stu .cl{font-size:12px;color:var(--ink-3)}
+.test b{display:block;font-size:13.5px}
+.test span{font-size:12px;color:var(--ink-3)}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;border:1px solid;border-radius:999px;padding:3px 10px 3px 4px;white-space:nowrap}
+.chip.ed{background:#EEF0FD;border-color:#CBD2F8;color:#2B3A9E}
+.chip.ed .t{width:20px;height:20px;border-radius:999px;background:var(--ed-bg);display:grid;place-items:center}
+.chip.wait{background:var(--surface-2);border-color:var(--border);color:var(--ink-2);padding-left:10px}
+.chip.draft{background:var(--info-bg);border-color:var(--info-line);color:var(--info);padding-left:10px}
+.due b{display:block;font-size:13px;font-variant-numeric:tabular-nums}
+.due span{font-size:12px;color:var(--ink-3)}
+.due.soon b{color:var(--accent-deep)}
+.gbtn{
+  border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);
+  border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;white-space:nowrap
+}
+.gbtn:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+.gbtn.ghost{background:var(--surface);color:var(--ink-2);border-color:var(--border-strong)}
+.gbtn.ghost:hover{background:var(--surface-2)}
+@media (max-width:860px){
+  .row{grid-template-columns:1fr 1fr}
+  .row.colhead{display:none}
+  .row > :last-child{grid-column:1 / -1;justify-self:start}
+}
+.foot{font-size:12.5px;color:var(--ink-3);margin-top:12px}
+
+/* ---------- how do you want to grade it? ---------- */
+.overlay{position:fixed;inset:0;z-index:40;background:rgba(16,24,40,.5);display:grid;place-items:center;padding:16px}
+.dialog{
+  width:min(640px,100%);max-height:calc(100% - 16px);overflow:auto;background:var(--surface);
+  border:1px solid var(--border);border-radius:14px;box-shadow:0 20px 50px rgba(16,24,40,.25);padding:22px
+}
+.dialog .eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.dialog h2{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-top:6px}
+.dialog .lede{font-size:13.5px;color:var(--ink-2);margin:6px 0 18px;line-height:1.5}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.modes{grid-template-columns:1fr}}
+.mode{
+  text-align:left;display:flex;flex-direction:column;gap:9px;background:var(--surface);
+  border:1px solid var(--border-strong);border-radius:12px;padding:16px;transition:border-color .12s,box-shadow .12s
+}
+.mode:hover{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.mode .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;flex:none}
+.mode.draft .ic{background:var(--ed-bg);box-shadow:inset 0 0 0 3px var(--ed-bg-2)}
+.mode.scratch .ic{background:var(--accent-soft);border:1px solid var(--accent-line)}
+.mode.scratch .ic svg{width:22px;height:22px;fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mode .nm{font-size:16px;font-weight:800}
+.mode .d{font-size:13px;line-height:1.5;color:var(--ink-2)}
+.mode .facts{display:flex;gap:6px;flex-wrap:wrap}
+.mode .facts span{font-size:11.5px;font-weight:600;border:1px solid var(--border);background:var(--surface-2);border-radius:6px;padding:3px 8px;color:var(--ink-2)}
+.dialog .end{display:flex;justify-content:flex-end;margin-top:16px}
+.linkbtn{border:none;background:none;font-size:13px;font-weight:600;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;padding:0}
+
+#toast{
+  position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(20px);opacity:0;
+  background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:10px 16px;border-radius:9px;
+  transition:opacity .2s,transform .2s;pointer-events:none;z-index:60
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+  <div class="topbar">
+    <div class="avatar">MH</div>
+    <div class="who"><span class="name">Ms. Hạnh</span><span class="meta">IELTS Speaking examiner · IEC</span></div>
+    <div class="spacer"></div>
+    <div class="stat"><b>48h</b><span>Return promise</span></div>
+    <div class="stat"><b id="statWaiting">4</b><span>Waiting for you</span></div>
+  </div>
+
+  <div class="head">
+    <div>
+      <h1>Speaking submissions</h1>
+      <p>Tests your students sent to you instead of Ed. Ed has already drafted a grading for each one.</p>
+    </div>
+    <div class="spacer"></div>
+    <div class="tabs">
+      <button class="tab" aria-current="true">Needs grading <span class="n">4</span></button>
+      <button class="tab" aria-current="false">In progress <span class="n">1</span></button>
+      <button class="tab" aria-current="false">Returned <span class="n">12</span></button>
+    </div>
+  </div>
+
+  <div class="list" id="list"></div>
+  <p class="foot">Oldest first. A submission turns orange when less than 12 hours are left on the 48-hour promise.</p>
+</div>
+
+<div class="overlay" id="modeDlg" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="modeTitle">
+    <div class="eyebrow" id="modeEyebrow"></div>
+    <h2 id="modeTitle"></h2>
+    <p class="lede" id="modeLede"></p>
+    <div class="modes">
+      <button class="mode draft" id="modeDraft">
+        <span class="ic" id="modeDraftIc"></span>
+        <span class="nm">Review Ed’s draft</span>
+        <span class="d">Start from Ed’s bands and flagged errors. Keep, change or remove each one, then add your own comments.</span>
+        <span class="facts" id="modeDraftFacts"></span>
+      </button>
+      <button class="mode scratch" id="modeScratch">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 8l3 3"/></svg></span>
+        <span class="nm">Grade from scratch</span>
+        <span class="d">Start with empty bands and no flags. Ed’s draft stays hidden until you choose to look at it.</span>
+        <span class="facts"><span>No AI suggestions</span><span>Your marking only</span></span>
+      </button>
+    </div>
+    <div class="end"><button class="linkbtn" id="modeCancel">Cancel</button></div>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* Demo submissions. Phạm Anh Thư's full test is the one open in speaking-grading-screen. */
+var SUBS = [
+  { av:'PT', name:'Phạm Anh Thư', cls:'IEC K29 · Foundation', test:'Full test', detail:'Parts 1–3 · 16 answers · 5:24',
+    sent:'Today, 09:42', due:'Due in 9h', soon:true, ed:{ band:'6.0', flags:13 } },
+  { av:'NK', name:'Nguyễn Minh Khoa', cls:'IEC K30 · Intermediate', test:'Part 2', detail:'Long turn · 1 answer · 1:52',
+    sent:'Yesterday, 21:15', due:'Due in 21h', ed:{ band:'6.5', flags:4 } },
+  { av:'TN', name:'Trần Bảo Ngọc', cls:'IEC K29 · Foundation', test:'Part 1', detail:'10 answers · 3:40',
+    sent:'Yesterday, 18:03', due:'Due in 24h', ed:{ band:'5.5', flags:7 } },
+  { av:'LH', name:'Lê Gia Huy', cls:'IEC K31 · Advanced', test:'Full test', detail:'Parts 1–3 · 16 answers · 6:10',
+    sent:'Today, 10:58', due:'Due in 46h', ed:null }
+];
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function edSvg(size){
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" aria-hidden="true">'
+    + '<path d="M30 93C13 93 7 80 11 63 17 39 34 13 58 9c19-3 29 10 25 31-3 16-10 32-16 44-5 8-17 9-37 9z" fill="#4A63E7"/>'
+    + '<path d="M70 6c9-2 17 0 17 6 0 7-3 13-6 17-3-8-6-15-11-23z" fill="#DFF77A"/>'
+    + '<ellipse cx="60" cy="33" rx="18" ry="13" transform="rotate(-14 60 33)" fill="#fff"/>'
+    + '<ellipse cx="56" cy="37" rx="2.8" ry="3.6" fill="#1C1508"/><ellipse cx="68" cy="27" rx="2.8" ry="3.6" fill="#1C1508"/></svg>';
+}
+
+document.getElementById('list').innerHTML =
+  '<div class="row colhead"><span>Student</span><span>Test</span><span>Ed’s draft</span><span>Due back</span><span></span></div>'
+  + SUBS.map(function(s, i){
+    return '<div class="row' + (s.soon ? ' urgent' : '') + '">'
+      + '<div class="stu"><span class="av">' + s.av + '</span><div><div class="nm">' + esc(s.name) + '</div><div class="cl">' + esc(s.cls) + '</div></div></div>'
+      + '<div class="test"><b>' + s.test + '</b><span>' + esc(s.detail) + '</span></div>'
+      + '<div>' + (s.ed
+          ? '<span class="chip ed"><span class="t">' + edSvg(15) + '</span>Ready · band ' + s.ed.band + ' · ' + s.ed.flags + ' flags</span>'
+          : '<span class="chip wait">Ed is still drafting…</span>') + '</div>'
+      + '<div class="due' + (s.soon ? ' soon' : '') + '"><b>' + s.due + '</b><span>Sent ' + s.sent + '</span></div>'
+      + '<div><button class="gbtn' + (i === 0 ? '' : ' ghost') + '" data-grade="' + i + '">Grade</button></div>'
+      + '</div>';
+  }).join('');
+
+var dlg = document.getElementById('modeDlg'), current = 0;
+function openMode(i){
+  current = i;
+  var s = SUBS[i];
+  document.getElementById('modeEyebrow').textContent = s.test + ' · sent ' + s.sent;
+  document.getElementById('modeTitle').textContent = 'How do you want to grade ' + s.name + '’s ' + s.test.toLowerCase() + '?';
+  document.getElementById('modeLede').textContent = s.ed
+    ? 'Ed has already graded it. You can work from Ed’s draft or mark it yourself. Either way, only your grading goes back to the student.'
+    : 'Ed is still drafting this one. You can wait a minute for Ed’s draft, or mark it yourself now.';
+  document.getElementById('modeDraftIc').innerHTML = edSvg(34);
+  document.getElementById('modeDraftFacts').innerHTML = s.ed
+    ? '<span>Ed’s band ' + s.ed.band + '</span><span>' + s.ed.flags + ' errors flagged</span><span>Rewritten answers</span>'
+    : '<span>Draft not ready yet</span>';
+  document.getElementById('modeDraft').disabled = !s.ed;
+  dlg.hidden = false;
+  document.getElementById(s.ed ? 'modeDraft' : 'modeScratch').focus();
+}
+function closeMode(){ dlg.hidden = true; }
+
+/* Inside the workflow page, choosing a mode jumps to the grading screen in that mode. */
+function choose(mode){
+  closeMode();
+  if (window.parent !== window){
+    try { window.parent.postMessage({ workflow:'goto', step:'t4', tab: mode === 'scratch' ? 1 : 0 }, '*'); } catch(e){}
+  }
+  toast(mode === 'scratch' ? 'Opening the grading screen with empty bands…' : 'Opening the grading screen with Ed’s draft…');
+}
+
+document.querySelectorAll('[data-grade]').forEach(function(b){
+  b.addEventListener('click', function(){ openMode(+b.dataset.grade); });
+});
+document.getElementById('modeDraft').addEventListener('click', function(){ choose('draft'); });
+document.getElementById('modeScratch').addEventListener('click', function(){ choose('scratch'); });
+document.getElementById('modeCancel').addEventListener('click', closeMode);
+dlg.addEventListener('click', function(e){ if (e.target === dlg) closeMode(); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !dlg.hidden) closeMode(); });
+
+var toastTimer;
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('on'); }, 2200);
+}
+
+/* Preset from the workflow page: 'choose' opens the grading-mode choice for the first student. */
+var AT = window.__AT || (location.hash.match(/at=([\w-]+)/) || [])[1] || '';
+if (AT === 'choose') openMode(0);
+})();
+</script>

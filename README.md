@@ -9,7 +9,8 @@ Everything here is **design material and a code scaffold**, not a running applic
 
 ### `mockups/` — clickable screens
 
-Eleven HTML prototypes. Open any file in a browser; they work offline and need no server.
+Thirteen HTML prototypes. Start with `speaking-workflow.html`: the whole flow as a clickable
+chart, where each step opens its screen. Open any file in a browser; they work offline and need no server.
 
 | File | What it shows |
 |---|---|
@@ -22,6 +23,8 @@ Eleven HTML prototypes. Open any file in a browser; they work offline and need n
 | `speaking-grading-screen.html` | Teacher side: grading a submitted attempt |
 | `interview-send-full.html` | Full test where Finish asks who grades it: Ed (instant AI grading) or the teacher (submitted, returned later) |
 | `interview-send-part-1/2/3.html` | The same choice for a single part |
+| `teacher-queue.html` | Teacher side: speaking tests waiting to be graded, and the review-Ed's-draft or grade-from-scratch choice |
+| `speaking-workflow.html` | The workflow map: click a step to see its screen at that moment |
 
 `INDEX.md` in that folder maps each file to its published link and explains what it does.
 

@@ -3,8 +3,12 @@
 Each file below is published as an artifact with the same name. Double-click a file to open it
 in your browser, or use the link to open the published version.
 
+**Start here:** `speaking-workflow.html` is the whole workflow as a clickable flow chart. Click a
+step and the matching screen opens beside it, already at that moment of the flow.
+
 | File | Artifact name | Link |
 |---|---|---|
+| `speaking-workflow.html` | IELTS Speaking Workflow | https://claude.ai/artifact/V3bvfpysgGReKte12caVaX |
 | `interview-choose-part.html` | IELTS mock interview choose part | https://claude.ai/artifact/C7M1Lc5A9wGJd8kweCk7Ky |
 | `interview-all-parts.html` | IELTS mock interview all parts | https://claude.ai/artifact/6m5chP54aXanng9FDUXtDc |
 | `interview-teacher-graded.html` | IELTS mock interview teacher graded | https://claude.ai/artifact/T7M9cmk2q7i8gM3hn1wYKG |
@@ -16,6 +20,7 @@ in your browser, or use the link to open the published version.
 | `interview-send-part-1.html` | IELTS mock interview send part 1 | https://claude.ai/artifact/4Qapd35du2z4gxhtvSMSah |
 | `interview-send-part-2.html` | IELTS mock interview send part 2 | https://claude.ai/artifact/Nti53pYqWLwPZ8rZ6NfwkR |
 | `interview-send-part-3.html` | IELTS mock interview send part 3 | https://claude.ai/artifact/2vERLV4udHLphrqrriVzE9 |
+| `teacher-queue.html` | Speaking Submissions Queue | bundled inside the workflow artifact |
 
 ## What each one is
 
@@ -52,6 +57,25 @@ above, but pressing Finish opens a popup asking who grades it:
   for the teacher pressing "Send to student" on `speaking-grading-screen`: a "your test has been
   graded" notification appears, and opening it shows the full teacher grading, exactly as in
   `interview-teacher-graded`.
+
+**speaking-workflow** — the workflow map. Steps 1–4 are the test itself (choose, answer, Finish,
+who grades it), then it forks: A1–A2 is the Ed path, B1–B7 the teacher path (received → teacher's
+queue → review Ed's draft or grade from scratch → grade → send → student notified → student
+reads the grading). Each step loads a mockup with a preset moment, passed as `window.__AT`
+(or `#at=...` in the URL when opened from disk). Presets:
+
+- `interview-send-*`: `finished`, `picker`, `ed-grading`, `ed`, `sent`, `returned`, `teacher`
+  (the test is fast-forwarded with the sample answers first)
+- `speaking-grading-screen`: `scratch` (no AI bands, flags or rewrites), `sent`
+- `teacher-queue`: `choose` (the review-or-scratch dialog is open)
+
+The workflow page fetches the other mockups, so open it from the standalone build
+(`node build-standalone.js ../dist`, then open `dist/speaking-workflow.html`), or use the
+published link, which bundles every screen it needs.
+
+**teacher-queue** — new. The teacher's list of speaking tests sent to them, oldest first, with
+Ed's draft status and the 48-hour deadline. Pressing Grade asks whether to review Ed's draft or
+grade from scratch.
 
 The part files are the full file with `var ONLY` set to 0, 1 or 2. Edit
 `interview-send-full.html` and run `node make-send-parts.js` to regenerate them.
