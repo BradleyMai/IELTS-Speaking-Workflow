@@ -283,6 +283,8 @@ var VIRTUAL_W = 1280;
    normal src with #at=... in the URL, which the mockups also read. */
 function getSource(file){
   if (cache[file]) return Promise.resolve(cache[file]);
+  /* The single-file build (build-workflow-file.js) embeds every screen in window.SCREENS. */
+  if (window.SCREENS && window.SCREENS[file]) return Promise.resolve(window.SCREENS[file]);
   return fetch(file).then(function(r){
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return r.text();
