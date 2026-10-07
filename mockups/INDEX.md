@@ -12,6 +12,10 @@ in your browser, or use the link to open the published version.
 | `interview-part-2.html` | IELTS mock interview part 2 | https://claude.ai/artifact/HPwhMvsFrDozUbejFgqF73 |
 | `interview-part-3.html` | IELTS mock interview part 3 | https://claude.ai/artifact/12Uhqhs3BsHmsjXJ4a8c6N |
 | `speaking-grading-screen.html` | Speaking Grading Screen | https://claude.ai/artifact/Rr7JkfZ7GXajpbhxd9nULV |
+| `interview-send-full.html` | IELTS mock interview send full | not published yet |
+| `interview-send-part-1.html` | IELTS mock interview send part 1 | not published yet |
+| `interview-send-part-2.html` | IELTS mock interview send part 2 | not published yet |
+| `interview-send-part-3.html` | IELTS mock interview send part 3 | not published yet |
 
 ## What each one is
 
@@ -36,11 +40,30 @@ or the feedback logic should be made once and regenerated.
 **speaking-grading-screen** — teacher side. Grading a submitted speaking attempt: audio with a
 transcript, flagged errors, and bands per part.
 
+**interview-send-full / interview-send-part-1 / 2 / 3** — the grading choice. Same test as
+above, but pressing Finish opens a popup asking who grades it:
+
+- **Send to Ed** — Ed, the LearnED mascot, is the AI grader. The grading appears right away:
+  bands on all four criteria per part (plus an overall band on the full test), Ed's comments,
+  the errors in every answer with corrections, and Ed's rewritten version of each answer. A
+  button then lets the student also send the same test to their teacher.
+- **Send to your teacher** — the student sees "Ms. Hạnh has received your submission" with a
+  Submitted → Being graded → Returned tracker, and can leave. A dashed **Demo** button stands in
+  for the teacher pressing "Send to student" on `speaking-grading-screen`: a "your test has been
+  graded" notification appears, and opening it shows the full teacher grading, exactly as in
+  `interview-teacher-graded`.
+
+The part files are the full file with `var ONLY` set to 0, 1 or 2. Edit
+`interview-send-full.html` and run `node make-send-parts.js` to regenerate them.
+
 ## Notes
 
 - These are mockups. No backend, no database, and the microphone is simulated — a published
   artifact cannot access a real microphone. The timer plus a typed transcript stands in for
   speech-to-text.
 - Student answers, scores and the examiner's questions are demo content, not real data.
+- Ed's rewritten answers are written for the sample answers, so they show only when an answer
+  was filled with **Load sample answer**. Ed's Pronunciation band is labelled as an estimate,
+  since the pipeline does not analyse audio for pronunciation yet.
 - The artifacts are private. Nobody else can open the links until they are shared from the
   Share menu on the page itself.

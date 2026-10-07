@@ -9,7 +9,7 @@ Everything here is **design material and a code scaffold**, not a running applic
 
 ### `mockups/` — clickable screens
 
-Seven HTML prototypes. Open any file in a browser; they work offline and need no server.
+Eleven HTML prototypes. Open any file in a browser; they work offline and need no server.
 
 | File | What it shows |
 |---|---|
@@ -20,6 +20,8 @@ Seven HTML prototypes. Open any file in a browser; they work offline and need no
 | `interview-part-2.html` | Part 2 alone — task card, one minute of preparation, the long turn |
 | `interview-part-3.html` | Part 3 alone — five discussion questions |
 | `speaking-grading-screen.html` | Teacher side: grading a submitted attempt |
+| `interview-send-full.html` | Full test where Finish asks who grades it: Ed (instant AI grading) or the teacher (submitted, returned later) |
+| `interview-send-part-1/2/3.html` | The same choice for a single part |
 
 `INDEX.md` in that folder maps each file to its published link and explains what it does.
 
@@ -57,8 +59,10 @@ detected per question, but **bands are given per part, not per question** — th
 shapes both the student screens and the grading screen.
 
 Grading goes one of two ways, matching how Writing already works: the AI grades it, or it goes
-to a teacher who either reviews the AI's grading or grades from scratch. The student then sees
-either the AI coach panel or their teacher's marks.
+to a teacher who either reviews the AI's grading or grades from scratch. The student makes that
+choice when they press Finish (`interview-send-*`): **Ed**, the LearnED mascot, is the name the
+student sees for AI grading. They then see either Ed's grading straight away, or a
+"your teacher has received your submission" state followed later by their teacher's marks.
 
 ## Caveats
 
