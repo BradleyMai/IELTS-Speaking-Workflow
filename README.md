@@ -25,6 +25,7 @@ chart, where each step opens its screen. Open any file in a browser; they work o
 | `interview-send-part-1/2/3.html` | The same choice for a single part |
 | `teacher-queue.html` | Teacher side: speaking tests waiting to be graded, and the review-Ed's-draft or grade-from-scratch choice |
 | `speaking-workflow.html` | The workflow map: click a step to see its screen at that moment |
+| `speaking-workflow-all-in-one.html` | The same workflow map as one self-contained file, with every screen built in. Download it and open it offline |
 
 `INDEX.md` in that folder maps each file to its published link and explains what it does.
 

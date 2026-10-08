@@ -70,9 +70,9 @@ reads the grading). Each step loads a mockup with a preset moment, passed as `wi
 - `teacher-queue`: `choose` (the review-or-scratch dialog is open)
 
 The workflow page loads the other mockups, so on its own from the repo folder it can't show
-them. For a single file you can download, email or open from disk, run
-`node build-workflow-file.js`: it writes `dist/speaking-workflow-all-in-one.html` with every
-screen embedded. Or use the published link, which bundles every screen it needs.
+them. For a single file you can download, email or open from disk, use
+`speaking-workflow-all-in-one.html`: every screen is embedded in it. After changing a mockup,
+rebuild it with `node build-workflow-file.js speaking-workflow-all-in-one.html`. Or use the published link, which bundles every screen it needs.
 
 **teacher-queue** — new. The teacher's list of speaking tests sent to them, oldest first, with
 Ed's draft status and the 48-hour deadline. Pressing Grade asks whether to review Ed's draft or
